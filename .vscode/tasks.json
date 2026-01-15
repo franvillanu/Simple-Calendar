@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Git Checkout Main",
+            "type": "shell",
+            "command": "git checkout main"
+        },
+        {
+            "label": "Git Pull",
+            "type": "shell",
+            "command": "git pull"
+        },
+        {
+            "label": "Git All",
+            "dependsOn": ["Git Checkout Main", "Git Pull"]
+        },
+        {
+            "label": "Wrangler Dev",
+            "type": "shell",
+            "command": "npm run dev"
+        },
+    ]
+}
