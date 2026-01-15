@@ -4,6 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>W03 January 2026 - Calendar</title>
+    <script>
+      (function () {
+        const savedTheme = localStorage.getItem("simpleCalendarTheme");
+        if (savedTheme === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
     <style>
       :root {
         --surface: #ffffff;
@@ -27,7 +35,7 @@
         min-height: 100vh;
       }
 
-      body.dark {
+      html.dark body {
         --surface: #1a1a1a;
         --surface-strong: #1f1f1f;
         --page-bg: #0f0f0f;
@@ -174,7 +182,7 @@
         box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
       }
 
-      body.dark .language-toggle span.active {
+      html.dark body .language-toggle span.active {
         box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
       }
 
@@ -330,6 +338,7 @@
         font-size: 18px;
         font-weight: 600;
         color: var(--muted);
+        cursor: pointer;
       }
 
       .calendar-controls select {
@@ -375,6 +384,7 @@
         font-weight: 700;
         color: var(--text);
         white-space: nowrap;
+        cursor: pointer;
       }
 
       .month-display select {
@@ -439,54 +449,54 @@
         background: var(--surface-strong);
       }
 
-      body.dark .day-cell.weekend {
+      html.dark body .day-cell.weekend {
         background: #2a2a2a;
       }
 
-      body.dark .calendar-wrapper {
+      html.dark body .calendar-wrapper {
         background: var(--surface-strong);
         border-color: rgba(255, 255, 255, 0.2);
         box-shadow: var(--shadow-deep);
       }
 
-      body.dark .action-group button,
-      body.dark .action-group select {
+      html.dark body .action-group button,
+      html.dark body .action-group select {
         background: var(--surface);
         border-color: #2a2f4c;
         color: var(--text);
         box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
       }
 
-      body.dark .action-group {
+      html.dark body .action-group {
         background: #1a1a1a;
         border-color: rgba(255, 255, 255, 0.18);
         box-shadow: var(--shadow-deep);
       }
 
-      body.dark .week-nav button,
-      body.dark .week-nav select {
+      html.dark body .week-nav button,
+      html.dark body .week-nav select {
         border-color: #2a2f4c;
         background: var(--surface);
         color: var(--text);
       }
 
-      body.dark .task-block {
+      html.dark body .task-block {
         box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
       }
 
-      body.dark .day-hover-add {
+      html.dark body .day-hover-add {
         background: rgba(255, 255, 255, 0.08);
         color: #f5f5f5;
         border-color: rgba(255, 255, 255, 0.2);
         box-shadow: 0 12px 25px rgba(0, 0, 0, 0.55);
       }
 
-      body.dark .modal {
+      html.dark body .modal {
         background: var(--surface);
         border-color: var(--border);
       }
 
-      body.dark .modal #delete-task {
+      html.dark body .modal #delete-task {
         background: rgba(255, 68, 68, 0.15);
         color: #ffb4b4;
       }
@@ -602,7 +612,7 @@
         background: var(--surface);
         border-radius: 24px;
         padding: 22px 24px;
-        width: min(480px, 100%);
+        width: min(620px, 100%);
         box-shadow: 0 35px 60px rgba(8, 10, 16, 0.2);
         position: relative;
       }
@@ -616,15 +626,15 @@
         color: var(--muted);
       }
 
-      body.dark .confirm-modal {
+      html.dark body .confirm-modal {
         color: #f5f5f5;
       }
 
-      body.dark .confirm-modal p {
+      html.dark body .confirm-modal p {
         color: rgba(255, 255, 255, 0.85);
       }
 
-      body.dark .confirm-modal strong {
+      html.dark body .confirm-modal strong {
         color: #ffffff;
       }
 
@@ -636,6 +646,61 @@
       .confirm-modal strong {
         color: #111;
         font-weight: 700;
+      }
+
+      .help-list {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 1.25rem;
+      }
+
+      .help-list p {
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      .help-section-title {
+        margin-top: 24px;
+        font-weight: 600;
+        font-size: 1.31rem;
+      }
+
+      .help-section-title:first-child {
+        margin-top: 0;
+      }
+
+      .help-row.section-end {
+        margin-bottom: 14px;
+      }
+
+      .help-section-title + .help-row {
+        margin-top: 8px;
+      }
+
+      .help-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1.19rem;
+      }
+
+      [data-i18n="helpIntro"] {
+        margin-bottom: 14px;
+      }
+
+      .help-key {
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .help-desc {
+        white-space: nowrap;
+      }
+
+      .help-sep {
+        opacity: 0.6;
       }
 
       .modal h2 {
@@ -708,7 +773,7 @@
         display: none;
       }
 
-      body.dark .field-error {
+      html.dark body .field-error {
         color: #ffb4b4;
       }
 
@@ -780,7 +845,7 @@
         pointer-events: none;
       }
 
-      body.dark .day-add-slot {
+      html.dark body .day-add-slot {
         background: rgba(255, 255, 255, 0.08);
         color: #f5f5f5;
         border-color: rgba(255, 255, 255, 0.2);
@@ -788,7 +853,7 @@
 
       body.dragging .day-add-slot {
         pointer-events: none;
-        opacity: 0.15;
+        opacity: 0;
       }
 
       .fullscreen-warning {
@@ -831,6 +896,7 @@
           </button>
           <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
           <button id="clear-week" aria-label="Clear week">🗑️</button>
+          <button id="help-toggle" class="theme-toggle" aria-label="Help">❓</button>
           <div class="export-menu">
             <button id="export-button" data-i18n="exportButton" aria-expanded="false">Export</button>
             <div class="export-dropdown" id="export-dropdown" role="menu" aria-label="Export format menu">
@@ -951,7 +1017,70 @@
       </div>
     </div>
 
-    <script src="html2canvas.min.js"></script>
+    <div id="help-overlay" class="modal-overlay">
+      <div class="modal" role="dialog" aria-modal="true">
+        <button class="close-btn" id="help-close" aria-label="Close help">&times;</button>
+        <h2 data-i18n="helpTitle">Guia rapida</h2>
+        <div class="modal-actions" style="margin-top:0;">
+          <div class="help-list">
+            <p class="help-section-title"><strong data-i18n="helpNavTitle">Atajos de teclado</strong></p>
+            <div class="help-row">
+              <span class="help-key">&#x2B05;&#xFE0F;</span>
+              <span class="help-sep">:</span>
+              <span class="help-desc" data-i18n="helpNavRow1">semana anterior</span>
+            </div>
+            <div class="help-row">
+              <span class="help-key">&#x27A1;&#xFE0F;</span>
+              <span class="help-sep">:</span>
+              <span class="help-desc" data-i18n="helpNavRow2">semana siguiente</span>
+            </div>
+            <div class="help-row">
+              <span class="help-key">&#x2B06;&#xFE0F;</span>
+              <span class="help-sep">:</span>
+              <span class="help-desc" data-i18n="helpNavRow3">mes siguiente</span>
+            </div>
+            <div class="help-row">
+              <span class="help-key">&#x2B07;&#xFE0F;</span>
+              <span class="help-sep">:</span>
+              <span class="help-desc" data-i18n="helpNavRow4">mes anterior</span>
+            </div>
+            <div class="help-row">
+              <span class="help-key">&#x1F3E0;</span>
+              <span class="help-sep">:</span>
+              <span class="help-desc" data-i18n="helpNavRow5">Home: primera semana del ano</span>
+            </div>
+            <div class="help-row section-end">
+              <span class="help-key">&#x1F51A;</span>
+              <span class="help-sep">:</span>
+              <span class="help-desc" data-i18n="helpNavRow6">End: ultima semana del ano</span>
+            </div>
+
+            <p class="help-section-title"><strong data-i18n="helpUiTitle">UI</strong></p>
+            <div class="help-row">
+              <span class="help-key">&#x1F1EA;&#x1F1F8;/&#x1F1EC;&#x1F1E7;</span>
+              <span class="help-sep">:</span>
+              <span class="help-desc" data-i18n="helpUiLang">idioma: Espanol/Ingles (por defecto Espanol)</span>
+            </div>
+            <div class="help-row">
+              <span class="help-key">&#x1F319;/&#x2600;&#xFE0F;</span>
+              <span class="help-sep">:</span>
+              <span class="help-desc" data-i18n="helpUiTheme">modo: oscuro o claro</span>
+            </div>
+            <div class="help-row">
+              <span class="help-key">&#x1F5D1;&#xFE0F;</span>
+              <span class="help-sep">:</span>
+              <span class="help-desc" data-i18n="helpUiClear">limpiar semana (si esta vacia: &#x2795; agrega ejemplo)</span>
+            </div>
+            <div class="help-row">
+              <span class="help-key">&#x1F4E4;</span>
+              <span class="help-sep">:</span>
+              <span class="help-desc" data-i18n="helpUiExport">exportar: PNG o PDF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<script src="html2canvas.min.js"></script>
     <script src="jspdf.umd.min.js"></script>
     <script>
       const lightPaletteColors = [
@@ -982,7 +1111,7 @@
 
       let paletteColors = lightPaletteColors;
 
-      const years = [2026, 2027];
+      const years = [2026, 2027, 2028, 2029, 2030];
       const i18n = {
         es: {
           modalTitle: "Agregar bloque",
@@ -1003,13 +1132,27 @@
           addBlock: "Agregar bloque",
           weekPrefix: "W",
           weekSelect: "Semana",
-          clearWeek: "🧹",
+          clearWeek: "🗑️",
           clearWeekTitle: "Limpiar semana",
           clearWeekCancel: "Cancelar",
           clearWeekConfirm: "Eliminar todos los bloques",
           restoreWeekTitle: "Restaurar ejemplo",
           restoreWeekCancel: "Cancelar",
           restoreWeekConfirm: "Agregar ejemplo",
+          helpTitle: "Guia rapida",
+          helpIntro: "\u2328\ufe0f Atajos de teclado",
+          helpNavTitle: "\u2328\ufe0f Keyboard Shortcuts",
+          helpNavRow1: "semana anterior",
+          helpNavRow2: "semana siguiente",
+          helpNavRow3: "mes siguiente",
+          helpNavRow4: "mes anterior",
+          helpNavRow5: "Home: primera semana del a\u00f1o",
+          helpNavRow6: "End: ultima semana del a\u00f1o",
+          helpUiTitle: "\u{1F5A5}\ufe0f User Interface",
+          helpUiLang: "idioma: Espanol/Ingles",
+          helpUiTheme: "modo: oscuro o claro",
+          helpUiClear: "limpiar semana (si esta vacia: \u2795 agrega ejemplo)",
+          helpUiExport: "exportar: PNG o PDF",
           confirmTitle: "Descartar cambios",
           confirmMessage: "Tienes cambios sin guardar. Deseas cancelar?",
           confirmStay: "Seguir editando",
@@ -1034,13 +1177,27 @@
           addBlock: "Add block",
           weekPrefix: "W",
           weekSelect: "Week",
-          clearWeek: "🧹",
+          clearWeek: "🗑️",
           clearWeekTitle: "Clear week",
           clearWeekCancel: "Cancel",
           clearWeekConfirm: "Remove all blocks",
           restoreWeekTitle: "Restore sample",
           restoreWeekCancel: "Cancel",
           restoreWeekConfirm: "Add sample",
+          helpTitle: "Quick guide",
+          helpIntro: "\u2328\ufe0f Keyboard shortcuts",
+          helpNavTitle: "\u2328\ufe0f Keyboard Shortcuts",
+          helpNavRow1: "previous week",
+          helpNavRow2: "next week",
+          helpNavRow3: "next month",
+          helpNavRow4: "previous month",
+          helpNavRow5: "Home: first week of the year",
+          helpNavRow6: "End: last week of the year",
+          helpUiTitle: "\u{1F5A5}\ufe0f User Interface",
+          helpUiLang: "language: Spanish/English",
+          helpUiTheme: "mode: dark or light",
+          helpUiClear: "clear week (if empty: \u2795 add sample)",
+          helpUiExport: "export: PNG or PDF",
           confirmTitle: "Discard changes",
           confirmMessage: "You have unsaved changes. Do you want to cancel?",
           confirmStay: "Keep editing",
@@ -1048,25 +1205,64 @@
         },
       };
 
-      const defaultTasks = {
-  "2026-03": {
-    12: [{ title: "Study block", description: "", color: lightPaletteColors[0], type: "task" }],
-    13: [{ title: "Project work", description: "", color: lightPaletteColors[1], type: "task" }],
-    14: [
-      { title: "Focus time", description: "", color: lightPaletteColors[0], type: "task" },
-      { title: "Lunch", description: "", color: lightPaletteColors[3], type: "task" },
-      { title: "Deep work", description: "", color: lightPaletteColors[0], type: "task" },
-    ],
-    15: [
-      { title: "Workshop", description: "", color: lightPaletteColors[2], type: "task" },
-      { title: "Lunch", description: "", color: lightPaletteColors[3], type: "task" },
-    ],
-    16: [
-      { title: "Inbox zero", description: "", color: lightPaletteColors[5], type: "task" },
-      { title: "Gym", description: "Evening session", color: lightPaletteColors[7], type: "task" },
-    ],
-  },
-};
+  function getSampleTasks(lang, paletteColors) {
+    if (lang === "es") {
+      return [
+        [{ title: "Bloque de estudio", description: "", color: paletteColors[0], type: "task" }],
+        [{ title: "Trabajo de proyecto", description: "", color: paletteColors[1], type: "task" }],
+        [
+          { title: "Tiempo de enfoque", description: "", color: paletteColors[0], type: "task" },
+          { title: "Almuerzo", description: "", color: paletteColors[3], type: "task" },
+          { title: "Trabajo profundo", description: "", color: paletteColors[0], type: "task" },
+        ],
+        [
+          { title: "Taller", description: "", color: paletteColors[2], type: "task" },
+          { title: "Almuerzo", description: "", color: paletteColors[3], type: "task" },
+        ],
+        [
+          { title: "Inbox cero", description: "", color: paletteColors[5], type: "task" },
+          { title: "Gimnasio", description: "Sesion de tarde", color: paletteColors[7], type: "task" },
+        ],
+      ];
+    }
+
+    return [
+      [{ title: "Study block", description: "", color: paletteColors[0], type: "task" }],
+      [{ title: "Project work", description: "", color: paletteColors[1], type: "task" }],
+      [
+        { title: "Focus time", description: "", color: paletteColors[0], type: "task" },
+        { title: "Lunch", description: "", color: paletteColors[3], type: "task" },
+        { title: "Deep work", description: "", color: paletteColors[0], type: "task" },
+      ],
+      [
+        { title: "Workshop", description: "", color: paletteColors[2], type: "task" },
+        { title: "Lunch", description: "", color: paletteColors[3], type: "task" },
+      ],
+      [
+        { title: "Inbox zero", description: "", color: paletteColors[5], type: "task" },
+        { title: "Gym", description: "Evening session", color: paletteColors[7], type: "task" },
+      ],
+    ];
+  }
+
+  function buildDefaultTasks(lang) {
+    const sampleTasks = getSampleTasks(lang, lightPaletteColors);
+    return {
+      "2026-03": {
+        12: sampleTasks[0],
+        13: sampleTasks[1],
+        14: sampleTasks[2],
+        15: sampleTasks[3],
+        16: sampleTasks[4],
+      },
+    };
+  }
+
+  const initialLang =
+    localStorage.getItem("simpleCalendarLang") && i18n[localStorage.getItem("simpleCalendarLang")]
+      ? localStorage.getItem("simpleCalendarLang")
+      : "es";
+  const defaultTasks = buildDefaultTasks(initialLang);
 
 function loadTasks() {
   try {
@@ -1128,6 +1324,9 @@ const state = {
       const clearWeekMessage = document.getElementById("clear-week-message");
       const clearWeekCancel = document.getElementById("clear-week-cancel");
       const clearWeekConfirm = document.getElementById("clear-week-confirm");
+      const helpToggle = document.getElementById("help-toggle");
+      const helpOverlay = document.getElementById("help-overlay");
+      const helpClose = document.getElementById("help-close");
       const restoreWeekOverlay = document.getElementById("restore-week-overlay");
       const restoreWeekMessage = document.getElementById("restore-week-message");
       const restoreWeekCancel = document.getElementById("restore-week-cancel");
@@ -1156,8 +1355,11 @@ const state = {
           return;
         }
         clearDropMarker();
+        const addSlot = container.querySelector(".day-add-slot");
         if (beforeElement) {
           container.insertBefore(dropMarker, beforeElement);
+        } else if (addSlot) {
+          container.insertBefore(dropMarker, addSlot);
         } else {
           container.appendChild(dropMarker);
         }
@@ -1223,6 +1425,7 @@ const state = {
           return;
         }
         state.lang = target.dataset.lang;
+        localStorage.setItem("simpleCalendarLang", state.lang);
         applyLanguage();
         renderCalendar();
       });
@@ -1291,6 +1494,20 @@ const state = {
           restoreWeekOverlay.classList.remove("visible");
         }
       });
+
+      if (helpToggle && helpOverlay && helpClose) {
+        helpToggle.addEventListener("click", () => {
+          helpOverlay.classList.add("visible");
+        });
+        helpClose.addEventListener("click", () => {
+          helpOverlay.classList.remove("visible");
+        });
+        helpOverlay.addEventListener("click", (event) => {
+          if (event.target === helpOverlay) {
+            helpOverlay.classList.remove("visible");
+          }
+        });
+      }
 
       clearWeekConfirm.addEventListener("click", () => {
         clearWeekOverlay.classList.remove("visible");
@@ -1426,20 +1643,7 @@ const state = {
         const weekKey = getWeekKey(state.week, state.year);
         const locale = state.lang === "es" ? "es-ES" : "en-US";
         const days = getISOWeekDates(state.week, state.year, locale);
-        const sampleTasks = [
-          [{ title: "Study block", description: "", color: paletteColors[0], type: "task" }],
-          [{ title: "Project work", description: "", color: paletteColors[1], type: "task" }],
-          [
-            { title: "Focus time", description: "", color: paletteColors[0], type: "task" },
-            { title: "Lunch", description: "", color: paletteColors[3], type: "task" },
-            { title: "Deep work", description: "", color: paletteColors[0], type: "task" },
-          ],
-          [
-            { title: "Workshop", description: "", color: paletteColors[2], type: "task" },
-            { title: "Lunch", description: "", color: paletteColors[3], type: "task" },
-          ],
-          [{ title: "Gym", description: "Evening session", color: paletteColors[7], type: "task" }],
-        ];
+          const sampleTasks = getSampleTasks(state.lang, paletteColors);
 
         if (!state.tasks[weekKey]) {
           state.tasks[weekKey] = {};
@@ -1863,7 +2067,11 @@ const state = {
       }
 
       themeToggle.addEventListener("click", () => {
-        document.body.classList.toggle("dark");
+        document.documentElement.classList.toggle("dark");
+        localStorage.setItem(
+          "simpleCalendarTheme",
+          document.documentElement.classList.contains("dark") ? "dark" : "light"
+        );
         applyPaletteTheme();
         setThemeToggleIcon();
       });
@@ -2079,12 +2287,28 @@ const state = {
       }
 
       renderYearOptions();
+      const savedLang = localStorage.getItem("simpleCalendarLang");
+      if (savedLang && i18n[savedLang]) {
+        state.lang = savedLang;
+      }
       applyLanguage();
       applyPaletteTheme();
       setThemeToggleIcon();
       updateExportToggle();
+      const savedTheme = localStorage.getItem("simpleCalendarTheme");
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+        applyPaletteTheme();
+        setThemeToggleIcon();
+      }
       renderCalendar();
     </script>
   </body>
 </html>
+
+
+
+
+
+
 
