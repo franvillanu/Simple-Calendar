@@ -8,7 +8,7 @@ Deploy as a static site.
 
 Build settings:
 - Framework preset: None
-- Build command: (leave empty)
+- Build command:
 - Build output directory: `./`
 
 The entry point is `index.html`.
