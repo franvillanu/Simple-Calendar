@@ -765,19 +765,91 @@
         box-sizing: border-box;
       }
 
-      .custom-select {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M2 2l4 4 4-4' stroke='%23333' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 16px center;
-        background-size: 12px;
-        padding-right: 44px;
+      .custom-select-wrapper {
+        position: relative;
+        width: 100%;
       }
 
-      .custom-select::-ms-expand {
-        display: none;
+      .custom-select-button {
+        width: 100%;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        background: var(--surface-strong);
+        padding: 14px 18px;
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text);
+        cursor: pointer;
+        box-shadow: inset 0 0 0 1px rgba(15, 18, 23, 0.04);
+        transition: border-color 0.2s ease;
+      }
+
+      .custom-select-button:hover {
+        border-color: rgba(15, 18, 23, 0.35);
+      }
+
+      .custom-select-panel {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        background: var(--surface-strong);
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        box-shadow: 0 20px 45px rgba(15, 18, 23, 0.12);
+        max-height: 260px;
+        overflow-y: auto;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-6px);
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+        z-index: 12;
+      }
+
+      .custom-select-panel.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .custom-select-option {
+        width: 100%;
+        border: none;
+        background: none;
+        text-align: left;
+        padding: 10px 16px;
+        font-size: 1rem;
+        color: var(--text);
+        cursor: pointer;
+        border-radius: 12px;
+      }
+
+      .custom-select-option:hover,
+      .custom-select-option.is-selected {
+        background: rgba(15, 18, 23, 0.08);
+      }
+
+      .custom-select-button .custom-select-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(15, 18, 23, 0.1);
+        font-size: 0.8rem;
+      }
+
+      .hidden-native-select {
+        position: absolute;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        pointer-events: none;
+        border: none;
       }
 
       .modal textarea {
@@ -969,7 +1041,7 @@
               <button id="prev-month" aria-label="Previous month">&lsaquo;</button>
               <span class="month-display" id="month-display">
                 <span id="month-display-text">Enero</span>
-                <select id="month-select" class="custom-select" aria-label="Month"></select>
+                <select id="month-select" aria-label="Month" data-custom="true"></select>
               </span>
               <button id="next-month" aria-label="Next month">&rsaquo;</button>
             </div>
@@ -980,7 +1052,7 @@
             </div>
             <div class="calendar-controls calendar-week-controls">
               <button id="prev-week" aria-label="Previous week">&lsaquo;</button>
-              <select id="week-select" class="custom-select" aria-label="Week"></select>
+              <select id="week-select" aria-label="Week" data-custom="true"></select>
               <button id="next-week" aria-label="Next week">&rsaquo;</button>
             </div>
           </div>
@@ -988,7 +1060,7 @@
             <span class="calendar-static" id="year-text">2026</span>
             <div class="calendar-controls calendar-year-controls">
               <button id="prev-year" aria-label="Previous year">&lsaquo;</button>
-              <select id="year-select" class="custom-select" aria-label="Year"></select>
+              <select id="year-select" aria-label="Year" data-custom="true"></select>
               <button id="next-year" aria-label="Next year">&rsaquo;</button>
             </div>
           </div>
@@ -1004,7 +1076,7 @@
         <p class="fullscreen-warning" data-i18n="modalHint" style="display:none;"></p>
         <form id="task-form">
           <label for="task-day" data-i18n="dayLabel">Dia</label>
-          <select id="task-day" name="day" class="custom-select"></select>
+          <select id="task-day" name="day" data-custom="true"></select>
 
           <label for="task-title" data-i18n="titleLabel">Titulo</label>
           <input id="task-title" name="title" data-i18n-placeholder="titlePlaceholder" />
@@ -1061,11 +1133,11 @@
       <div class="modal confirm-modal" role="dialog" aria-modal="true">
         <h2 data-i18n="moveTitle">Mover bloque</h2>
         <label for="move-year" data-i18n="moveYearLabel">Año</label>
-        <select id="move-year" class="custom-select"></select>
+        <select id="move-year" data-custom="true"></select>
         <label for="move-week" data-i18n="moveWeekLabel">Semana</label>
-        <select id="move-week" class="custom-select"></select>
+        <select id="move-week" data-custom="true"></select>
         <label for="move-day" data-i18n="moveDayLabel">Día</label>
-        <select id="move-day" class="custom-select"></select>
+        <select id="move-day" data-custom="true"></select>
         <div class="modal-actions">
           <button type="button" class="secondary" id="move-cancel" data-i18n="moveCancel">Cancelar</button>
           <button type="button" class="primary" id="move-confirm" data-i18n="moveConfirm">Mover bloque</button>
@@ -1448,6 +1520,9 @@ const state = {
       let currentDropIndex = null;
       let formDirty = false;
       let monthLock = false;
+      const customSelectRegistry = new Map();
+      let activeCustomSelect = null;
+      registerCustomSelects();
 
       function clearDropMarker() {
         if (currentDropContainer) {
@@ -1481,6 +1556,118 @@ const state = {
           pointerDownOnBackdrop = false;
           onClose(event);
         });
+      }
+
+      function registerCustomSelects() {
+        document.querySelectorAll("select[data-custom]").forEach((selectEl) => {
+          if (!selectEl || customSelectRegistry.has(selectEl)) return;
+          const wrapper = document.createElement("div");
+          wrapper.className = "custom-select-wrapper";
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "custom-select-button";
+          button.setAttribute("aria-haspopup", "listbox");
+          button.setAttribute("aria-expanded", "false");
+          const valueSpan = document.createElement("span");
+          valueSpan.className = "custom-select-value";
+          const arrowSpan = document.createElement("span");
+          arrowSpan.className = "custom-select-arrow";
+          arrowSpan.textContent = "▾";
+          button.append(valueSpan, arrowSpan);
+          const panel = document.createElement("div");
+          panel.className = "custom-select-panel";
+          panel.setAttribute("role", "listbox");
+          panel.setAttribute("tabindex", "-1");
+          selectEl.parentNode.insertBefore(wrapper, selectEl);
+          wrapper.append(button, panel, selectEl);
+          selectEl.classList.add("hidden-native-select");
+          selectEl.setAttribute("aria-hidden", "true");
+          selectEl.tabIndex = -1;
+          const record = { selectEl, wrapper, button, panel, valueSpan };
+          customSelectRegistry.set(selectEl, record);
+          button.addEventListener("click", (event) => {
+            event.preventDefault();
+            toggleCustomSelect(record);
+          });
+          panel.addEventListener("click", (event) => {
+            const optionButton = event.target.closest("[data-value]");
+            if (!optionButton || optionButton.disabled) return;
+            selectEl.value = optionButton.dataset.value;
+            selectEl.dispatchEvent(new Event("change", { bubbles: true }));
+            closeCustomSelect(record);
+          });
+          selectEl.addEventListener("change", () => {
+            updateCustomSelectDisplay(record);
+          });
+          updateCustomSelect(record);
+        });
+      }
+
+      function updateCustomSelect(record) {
+        const { selectEl, panel } = record;
+        panel.innerHTML = "";
+        selectEl.querySelectorAll("option").forEach((option) => {
+          const optionButton = document.createElement("button");
+          optionButton.type = "button";
+          optionButton.className = "custom-select-option";
+          optionButton.dataset.value = option.value;
+          optionButton.textContent = option.textContent;
+          if (option.disabled) {
+            optionButton.disabled = true;
+          }
+          panel.appendChild(optionButton);
+        });
+        updateCustomSelectDisplay(record);
+      }
+
+      function updateCustomSelectDisplay(record) {
+        const { selectEl, button, valueSpan, panel } = record;
+        const selectedOption = selectEl.options[selectEl.selectedIndex];
+        valueSpan.textContent = selectedOption ? selectedOption.textContent : "";
+        panel.querySelectorAll(".custom-select-option").forEach((elem) => {
+          elem.classList.toggle("is-selected", elem.dataset.value === selectEl.value);
+        });
+        button.setAttribute("aria-expanded", panel.classList.contains("open") ? "true" : "false");
+      }
+
+      function toggleCustomSelect(record) {
+        const isOpen = record.panel.classList.contains("open");
+        closeAllCustomSelects();
+        if (!isOpen) {
+          record.panel.classList.add("open");
+          record.button.setAttribute("aria-expanded", "true");
+          activeCustomSelect = record;
+        }
+      }
+
+      function closeCustomSelect(record) {
+        if (record.panel.classList.contains("open")) {
+          record.panel.classList.remove("open");
+          record.button.setAttribute("aria-expanded", "false");
+          if (activeCustomSelect === record) {
+            activeCustomSelect = null;
+          }
+        }
+      }
+
+      function closeAllCustomSelects() {
+        customSelectRegistry.forEach((record) => {
+          closeCustomSelect(record);
+        });
+      }
+
+      document.addEventListener("click", (event) => {
+        customSelectRegistry.forEach((record) => {
+          if (!record.wrapper.contains(event.target)) {
+            closeCustomSelect(record);
+          }
+        });
+      });
+
+      function refreshCustomSelect(selectEl) {
+        const record = customSelectRegistry.get(selectEl);
+        if (!record) return;
+        updateCustomSelect(record);
       }
 
       function showDropMarker(container, beforeElement, insertIndex) {
@@ -1677,6 +1864,7 @@ const state = {
           if (yr === state.year) option.selected = true;
           yearSelect.appendChild(option);
         });
+        refreshCustomSelect(yearSelect);
       }
 
       function syncSelectWidth(select, display, textOverride = "") {
@@ -1709,6 +1897,7 @@ const state = {
           monthSelect.appendChild(option);
         }
         syncSelectWidth(monthSelect, monthDisplay, monthDisplayText?.textContent || "");
+        refreshCustomSelect(monthSelect);
       }
 
       function getISOWeekDates(week, year, locale) {
@@ -1806,6 +1995,7 @@ const state = {
           if (i === state.week) option.selected = true;
           weekSelect.appendChild(option);
         }
+        refreshCustomSelect(weekSelect);
       }
 
       function populateMoveYearOptions(selectedYear = state.year) {
@@ -1818,6 +2008,7 @@ const state = {
           if (yr === selectedYear) option.selected = true;
           moveYearSelect.appendChild(option);
         });
+        refreshCustomSelect(moveYearSelect);
       }
 
       function populateMoveWeekOptions(year, defaultWeek = state.week) {
@@ -1832,6 +2023,7 @@ const state = {
           if (wk === defaultWeek) option.selected = true;
           moveWeekSelect.appendChild(option);
         }
+        refreshCustomSelect(moveWeekSelect);
       }
 
       function updateMoveDayOptions(preferredDay = null) {
@@ -1855,6 +2047,7 @@ const state = {
         if (!matched && days.length) {
           moveDaySelect.value = days[0].date;
         }
+        refreshCustomSelect(moveDaySelect);
       }
 
       function openMoveOverlay() {
@@ -1901,6 +2094,7 @@ const state = {
           lastSelectedDay = days[0].date;
         }
         taskDaySelect.value = lastSelectedDay;
+        refreshCustomSelect(taskDaySelect);
         const weekLabel = `${i18n[state.lang].weekSelect} ${state.week}`;
         weekText.textContent = weekLabel;
         if (!monthLock) {
@@ -2147,6 +2341,7 @@ const state = {
         if (fallback !== null) {
           taskDaySelect.value = fallback;
           lastSelectedDay = fallback;
+          refreshCustomSelect(taskDaySelect);
         }
         if (task) {
           editingTask = { day, index };
@@ -2414,6 +2609,7 @@ const state = {
 
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
+          closeAllCustomSelects();
           if (moveOverlay && moveOverlay.classList.contains("visible")) {
             moveOverlay.classList.remove("visible");
             event.preventDefault();
