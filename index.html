@@ -388,7 +388,7 @@
       }
 
       .calendar-controls select {
-        font-weight: 700;
+        font-weight: 700 !important;
         appearance: none;
         width: max-content;
         min-width: 0;
@@ -1349,6 +1349,7 @@
           font-size: 0.45rem;
         }
       }
+
     </style>
   </head>
   <body>
@@ -2157,8 +2158,8 @@ const state = {
           if (isWeekEmpty(state.week, state.year)) {
             restoreWeekMessage.textContent =
               state.lang === "es"
-                ? `Quieres agregar el ejemplo de ${label} a esta semana vacia?`
-                : `Add the sample for ${label} to this empty week?`;
+                ? `¿Quieres agregar bloques de ejemplo a esta semana?`
+                : `Do you want to add sample blocks to this week?`;
             restoreWeekOverlay.classList.add("visible");
             return;
           }
@@ -3239,7 +3240,14 @@ const state = {
         exportNode.style.top = "0";
         exportNode.style.transform = "translateX(-10000px)";
         exportNode.style.pointerEvents = "none";
-        exportNode.style.width = `${target.offsetWidth}px`;
+        // Force desktop width for horizontal layout
+        const desktopWidth = Math.max(target.offsetWidth, 1100);
+        exportNode.style.width = `${desktopWidth}px`;
+        // Force 7-column grid layout for export
+        const exportGrid = exportNode.querySelector(".calendar-grid");
+        if (exportGrid) {
+          exportGrid.style.gridTemplateColumns = "repeat(7, minmax(0, 1fr))";
+        }
         document.body.appendChild(exportNode);
         try {
           const canvas = await html2canvas(exportNode, { scale: 2 });
