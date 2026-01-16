@@ -832,24 +832,26 @@
         border: none;
         background: none;
         text-align: left;
-        padding: 10px 18px;
+        padding: 12px 20px;
         font-size: 1rem;
         color: var(--text);
         cursor: pointer;
         border-radius: 0;
         font-weight: 500;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-clip: padding-box;
+        display: block;
+        line-height: 1.4;
+      }
+
+      .custom-select-option + .custom-select-option {
+        margin-top: 2px;
       }
 
       .custom-select-option:hover {
-        background: rgba(82, 139, 255, 0.08);
+        background: rgba(82, 139, 255, 0.05);
       }
 
       .custom-select-option.is-selected {
-        background: rgba(82, 139, 255, 0.12);
+        background: rgba(82, 139, 255, 0.08);
         font-weight: 600;
       }
 
