@@ -2796,6 +2796,7 @@ const state = {
         paletteEl.innerHTML = "";
         paletteColors.forEach((color, index) => {
           const button = document.createElement("button");
+          button.type = "button";
           button.style.background = color;
           button.dataset.color = color;
           if (index === 0) button.classList.add("selected");
