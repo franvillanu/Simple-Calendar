@@ -25,14 +25,48 @@
         --card-desc: rgba(15, 18, 23, 0.65);
         --shadow: 0 20px 45px rgba(15, 18, 23, 0.08);
         --shadow-deep: 0 25px 55px rgba(5, 8, 23, 0.15);
+        --select-hover: rgba(82, 139, 255, 0.08);
+        --select-selected: rgba(82, 139, 255, 0.12);
       }
 
       body {
         margin: 0;
         font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-weight: normal;
         background: var(--page-bg);
         color: var(--text);
         min-height: 100vh;
+      }
+
+      label, input, select, textarea, option {
+        font-weight: normal !important;
+      }
+
+      button {
+        font-weight: 600 !important;
+      }
+
+      body,
+      .modal {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(15, 18, 23, 0.25) transparent;
+      }
+
+      body::-webkit-scrollbar,
+      .modal::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      body::-webkit-scrollbar-thumb,
+      .modal::-webkit-scrollbar-thumb {
+        background: rgba(15, 18, 23, 0.35);
+        border-radius: 999px;
+      }
+
+      body::-webkit-scrollbar-track,
+      .modal::-webkit-scrollbar-track {
+        background: transparent;
       }
 
       html.dark body {
@@ -47,7 +81,19 @@
         --card-desc: rgba(224, 224, 224, 0.7);
         --shadow: 0 25px 80px rgba(0, 0, 0, 0.8);
         --shadow-deep: 0 25px 80px rgba(0, 0, 0, 0.8);
+        --select-hover: rgba(255, 255, 255, 0.05);
+        --select-selected: rgba(255, 255, 255, 0.08);
         background: var(--page-bg);
+      }
+
+      html.dark body,
+      html.dark .modal {
+        scrollbar-color: rgba(255, 255, 255, 0.45) transparent;
+      }
+
+      html.dark body::-webkit-scrollbar-thumb,
+      html.dark .modal::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.45);
       }
 
       .page {
@@ -438,7 +484,7 @@
         border: 1px solid var(--border);
         border-top: none;
         padding: 16px 18px;
-        min-height: 450px;
+        min-height: 500px;
         display: flex;
         flex-direction: column;
         gap: 8px;
@@ -566,6 +612,13 @@
         font-size: 0.78rem;
         font-weight: 500;
         color: rgba(0, 0, 0, 0.65);
+        line-height: 1.3rem;
+        max-height: 2.6rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
 
       .task-block .edit-icon {
@@ -618,12 +671,15 @@
       }
 
       .confirm-modal {
-        width: min(360px, 100%);
+        width: auto;
+        min-width: 320px;
+        max-width: min(500px, 90%);
       }
 
       .confirm-modal p {
         margin-bottom: 12px;
         color: var(--muted);
+        white-space: nowrap;
       }
 
       html.dark body .confirm-modal {
@@ -638,14 +694,21 @@
         color: #ffffff;
       }
 
-      #clear-week-message {
-        white-space: normal;
-        word-break: break-word;
-      }
-
       .confirm-modal strong {
         color: #111;
         font-weight: 700;
+      }
+
+      .confirm-modal label {
+        margin-top: 16px;
+      }
+
+      .confirm-modal label:first-of-type {
+        margin-top: 8px;
+      }
+
+      .confirm-modal select {
+        margin-bottom: 0;
       }
 
       .help-list {
@@ -700,7 +763,102 @@
       }
 
       .help-sep {
-        opacity: 0.6;
+        opacity: 0.5;
+      }
+
+      .help-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        width: 100%;
+      }
+
+      .help-section {
+        width: 100%;
+      }
+
+      .help-section-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--muted);
+        margin-bottom: 12px;
+        padding-left: 4px;
+      }
+
+      .help-section-label .icon {
+        font-size: 1rem;
+      }
+
+      .help-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px 20px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      html.dark .help-card {
+        background: var(--surface-strong);
+        border-color: var(--border);
+      }
+
+      .help-card .help-list {
+        font-size: 1rem;
+        gap: 6px;
+      }
+
+      .help-card .help-row {
+        font-size: 0.95rem;
+        gap: 14px;
+      }
+
+      .help-card .help-key {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 36px;
+        height: 32px;
+        padding: 0 10px;
+        background: var(--surface-strong);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      html.dark .help-card .help-key {
+        background: var(--surface);
+      }
+
+      .help-disclaimer {
+        background: rgba(255, 220, 150, 0.25);
+        border: 1px solid rgba(200, 160, 80, 0.3);
+        border-radius: 12px;
+        padding: 16px 18px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: var(--text);
+        margin-top: 8px;
+      }
+
+      .help-disclaimer strong {
+        color: #b8860b;
+        font-weight: 600;
+      }
+
+      html.dark .help-disclaimer {
+        background: rgba(180, 140, 60, 0.15);
+        border-color: rgba(180, 140, 60, 0.25);
+      }
+
+      html.dark .help-disclaimer strong {
+        color: #daa520;
       }
 
       .modal h2 {
@@ -708,13 +866,24 @@
         font-size: 1.2rem;
       }
 
+      #help-overlay .modal h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
       .modal label {
         font-size: 0.75rem;
+        font-weight: normal !important;
         text-transform: uppercase;
         letter-spacing: 0.4px;
         color: var(--muted);
-        display: inline-block;
-        margin-bottom: 6px;
+        display: block;
+        margin-bottom: 8px;
+        margin-top: 18px;
+      }
+
+      .modal label:first-of-type {
+        margin-top: 0;
       }
 
       .modal input,
@@ -724,12 +893,120 @@
         border-radius: 12px;
         border: 1px solid var(--border);
         padding: 12px 16px;
-        margin-top: 6px;
-        margin-bottom: 12px;
+        margin-top: 0;
+        margin-bottom: 0;
         background: var(--surface-strong);
         font-size: 1rem;
+        font-weight: normal;
         color: var(--text);
         box-sizing: border-box;
+      }
+
+      .custom-select-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .custom-select-wrapper + .custom-select-wrapper {
+        margin-top: 14px;
+      }
+
+      .custom-select-button {
+        width: 100%;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        background: var(--surface-strong);
+        padding: 14px 18px;
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1rem;
+        font-weight: normal !important;
+        color: var(--text);
+        cursor: pointer;
+        box-shadow: inset 0 0 0 1px rgba(15, 18, 23, 0.04);
+        transition: border-color 0.2s ease;
+      }
+
+      .custom-select-button:hover {
+        border-color: rgba(15, 18, 23, 0.35);
+      }
+
+      .custom-select-panel {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--surface-strong);
+        border-radius: 0 0 18px 18px;
+        border: 1px solid var(--border);
+        border-top: none;
+        box-shadow: 0 25px 50px rgba(15, 18, 23, 0.14);
+        max-height: 260px;
+        overflow-y: auto;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(6px);
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+        z-index: 12;
+        padding: 0;
+        font-weight: normal !important;
+      }
+
+      .custom-select-panel.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .custom-select-option {
+        width: 100%;
+        border: none;
+        background: none;
+        text-align: left;
+        padding: 12px 20px;
+        font-size: 1rem;
+        color: var(--text);
+        cursor: pointer;
+        font-weight: normal !important;
+        line-height: 1.4;
+        border-radius: 0;
+      }
+
+      .custom-select-option:hover {
+        background: rgba(82, 139, 255, 0.12);
+        border-radius: 0;
+      }
+
+      .custom-select-option.is-selected {
+        background: rgba(82, 139, 255, 0.18);
+        border-radius: 0;
+      }
+
+      html.dark {
+        --select-hover: rgba(255, 255, 255, 0.05);
+        --select-selected: rgba(255, 255, 255, 0.08);
+      }
+
+      .custom-select-button .custom-select-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        height: auto;
+        border-radius: 0;
+        background: transparent;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .hidden-native-select {
+        position: absolute;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        pointer-events: none;
+        border: none;
       }
 
       .modal textarea {
@@ -765,16 +1042,21 @@
         margin-top: 6px;
       }
 
+      #move-overlay .modal-actions {
+        margin-top: 24px;
+      }
+
       .field-error {
-        font-size: 0.8rem;
-        color: #b42318;
-        margin-top: -6px;
-        margin-bottom: 10px;
+        font-size: 0.75rem;
+        color: #c53030;
+        margin-top: 6px;
+        margin-bottom: 0;
+        padding-left: 2px;
         display: none;
       }
 
       html.dark body .field-error {
-        color: #ffb4b4;
+        color: #fc8181;
       }
 
       .modal button {
@@ -883,6 +1165,190 @@
           justify-content: flex-start;
         }
       }
+
+      /* Week Dots Strip */
+      .week-dots-strip {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        padding: 14px 20px 16px;
+        background: var(--surface);
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+
+      .week-dots-content {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 2px;
+      }
+
+      .week-dots-month-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .week-dots-month-dots {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 6px;
+        border-radius: 10px;
+        background: transparent;
+        transition: background 0.2s ease;
+      }
+
+      .week-dots-month-group.is-current-month .week-dots-month-dots {
+        background: rgba(126, 184, 218, 0.15);
+      }
+
+      html.dark body .week-dots-month-group.is-current-month .week-dots-month-dots {
+        background: rgba(90, 159, 196, 0.2);
+      }
+
+      .week-dots-month-label {
+        font-size: 0.58rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        opacity: 0.5;
+        white-space: nowrap;
+      }
+
+      .week-dots-month-group.is-current-month .week-dots-month-label {
+        opacity: 1;
+        color: #7eb8da;
+      }
+
+      html.dark body .week-dots-month-group.is-current-month .week-dots-month-label {
+        color: #5a9fc4;
+      }
+
+      .week-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--border);
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      .week-dot:hover {
+        transform: scale(1.4);
+      }
+
+      .week-dot.has-content {
+        background: #7eb8da;
+      }
+
+      html.dark body .week-dot.has-content {
+        background: #5a9fc4;
+      }
+
+      .week-dot.is-current {
+        box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--text);
+      }
+
+      .week-dot.is-current.has-content {
+        box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px #7eb8da;
+      }
+
+      html.dark body .week-dot.is-current.has-content {
+        box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px #5a9fc4;
+      }
+
+      .week-dot-tooltip {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--text);
+        color: var(--surface);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+        z-index: 10;
+      }
+
+      .week-dot:hover .week-dot-tooltip {
+        opacity: 1;
+      }
+
+      .week-dot-tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 4px solid transparent;
+        border-top-color: var(--text);
+      }
+
+      @media (max-width: 900px) {
+        .week-dots-strip {
+          padding: 12px 14px 14px;
+        }
+
+        .week-dots-month-group {
+          gap: 5px;
+        }
+
+        .week-dots-month-dots {
+          gap: 4px;
+          padding: 3px 5px;
+        }
+
+        .week-dot {
+          width: 10px;
+          height: 10px;
+        }
+
+        .week-dots-month-label {
+          font-size: 0.5rem;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .week-dots-strip {
+          padding: 10px 12px 12px;
+        }
+
+        .week-dots-content {
+          flex-wrap: wrap;
+          gap: 4px;
+        }
+
+        .week-dots-month-group {
+          gap: 4px;
+        }
+
+        .week-dots-month-dots {
+          gap: 3px;
+          padding: 2px 4px;
+        }
+
+        .week-dot {
+          width: 8px;
+          height: 8px;
+        }
+
+        .week-dots-month-label {
+          font-size: 0.45rem;
+        }
+      }
     </style>
   </head>
   <body>
@@ -904,7 +1370,7 @@
               <button type="button" data-format="pdf">📄 PDF</button>
             </div>
           </div>
-          <select id="export-format" class="export-select" aria-hidden="true" tabindex="-1">
+          <select id="export-format" class="export-select custom-select" aria-hidden="true" tabindex="-1">
             <option value="png">PNG</option>
             <option value="pdf">PDF</option>
           </select>
@@ -947,6 +1413,8 @@
         </div>
         <div class="calendar-grid" id="calendar-grid"></div>
       </section>
+
+      <div class="week-dots-strip" id="week-dots-strip"></div>
     </div>
 
     <div id="modal-overlay" class="modal-overlay">
@@ -956,7 +1424,7 @@
         <p class="fullscreen-warning" data-i18n="modalHint" style="display:none;"></p>
         <form id="task-form">
           <label for="task-day" data-i18n="dayLabel">Dia</label>
-          <select id="task-day" name="day"></select>
+          <select id="task-day" name="day" data-custom="true"></select>
 
           <label for="task-title" data-i18n="titleLabel">Titulo</label>
           <input id="task-title" name="title" data-i18n-placeholder="titlePlaceholder" />
@@ -1013,11 +1481,11 @@
       <div class="modal confirm-modal" role="dialog" aria-modal="true">
         <h2 data-i18n="moveTitle">Mover bloque</h2>
         <label for="move-year" data-i18n="moveYearLabel">Año</label>
-        <select id="move-year"></select>
+        <select id="move-year" data-custom="true"></select>
         <label for="move-week" data-i18n="moveWeekLabel">Semana</label>
-        <select id="move-week"></select>
+        <select id="move-week" data-custom="true"></select>
         <label for="move-day" data-i18n="moveDayLabel">Día</label>
-        <select id="move-day"></select>
+        <select id="move-day" data-custom="true"></select>
         <div class="modal-actions">
           <button type="button" class="secondary" id="move-cancel" data-i18n="moveCancel">Cancelar</button>
           <button type="button" class="primary" id="move-confirm" data-i18n="moveConfirm">Mover bloque</button>
@@ -1050,62 +1518,83 @@
     <div id="help-overlay" class="modal-overlay">
       <div class="modal" role="dialog" aria-modal="true">
         <button class="close-btn" id="help-close" aria-label="Close help">&times;</button>
-        <h2 data-i18n="helpTitle">Guia rapida</h2>
-        <div class="modal-actions" style="margin-top:0;">
-          <div class="help-list">
-            <p class="help-section-title"><strong data-i18n="helpNavTitle">Atajos de teclado</strong></p>
-            <div class="help-row">
-              <span class="help-key">&#x2B05;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow1">semana anterior</span>
+        <h2 data-i18n="helpTitle">Guía Rápida</h2>
+        <div class="help-cards-container">
+          <div class="help-section">
+            <div class="help-section-label">
+              <span class="icon">&#x2328;&#xFE0F;</span>
+              <span data-i18n="helpNavTitle">Atajos de Teclado</span>
             </div>
-            <div class="help-row">
-              <span class="help-key">&#x27A1;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow2">semana siguiente</span>
+            <div class="help-card">
+              <div class="help-list">
+                <div class="help-row">
+                  <span class="help-key">&#x2B05;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow1">Semana anterior</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x27A1;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow2">Semana siguiente</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x2B06;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow3">Mes siguiente</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x2B07;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow4">Mes anterior</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x1F3E0;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow5">Home: Primera semana del año</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x1F51A;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow6">End: Última semana del año</span>
+                </div>
+              </div>
             </div>
-            <div class="help-row">
-              <span class="help-key">&#x2B06;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow3">mes siguiente</span>
-            </div>
-            <div class="help-row">
-              <span class="help-key">&#x2B07;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow4">mes anterior</span>
-            </div>
-            <div class="help-row">
-              <span class="help-key">&#x1F3E0;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow5">Home: primera semana del ano</span>
-            </div>
-            <div class="help-row section-end">
-              <span class="help-key">&#x1F51A;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow6">End: ultima semana del ano</span>
-            </div>
+          </div>
 
-            <p class="help-section-title"><strong data-i18n="helpUiTitle">UI</strong></p>
-            <div class="help-row">
-              <span class="help-key">&#x1F1EA;&#x1F1F8;/&#x1F1EC;&#x1F1E7;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpUiLang">idioma: Espanol/Ingles (por defecto Espanol)</span>
+          <div class="help-section">
+            <div class="help-section-label">
+              <span class="icon">&#x1F5A5;&#xFE0F;</span>
+              <span data-i18n="helpUiTitle">Interfaz de Usuario</span>
             </div>
-            <div class="help-row">
-              <span class="help-key">&#x1F319;/&#x2600;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpUiTheme">modo: oscuro o claro</span>
+            <div class="help-card">
+              <div class="help-list">
+                <div class="help-row">
+                  <span class="help-key">ES/GB</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpUiLang">Idioma: Español/Inglés</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x1F319;/&#x2600;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpUiTheme">Modo: Oscuro o claro</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x1F5D1;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpUiClear">Limpiar semana (si está vacía: + agrega ejemplo)</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x1F4E4;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpUiExport">Exportar: PNG o PDF</span>
+                </div>
+              </div>
             </div>
-            <div class="help-row">
-              <span class="help-key">&#x1F5D1;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpUiClear">limpiar semana (si esta vacia: &#x2795; agrega ejemplo)</span>
-            </div>
-            <div class="help-row">
-              <span class="help-key">&#x1F4E4;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpUiExport">exportar: PNG o PDF</span>
-            </div>
+          </div>
+
+          <div class="help-disclaimer">
+            <strong data-i18n="helpDisclaimerLabel">Aviso:</strong>
+            <span data-i18n="helpDisclaimerBody">Esta aplicación funciona localmente en el navegador. Cada navegador guarda su propio calendario de forma independiente. Cambiar de navegador o de dispositivo no borra tus datos: simplemente usarás un calendario nuevo en ese entorno. El calendario solo se elimina si se borran manualmente los datos del navegador donde fue creado.</span>
           </div>
         </div>
       </div>
@@ -1122,8 +1611,8 @@
         "#ecf0f1",
         "#e5e7e9",
         "#fadbd8",
-        "#f8f8f8",
-        "#f9f9f9",
+        "#ffd9ca",
+        "#dcf6ff",
       ];
 
       const darkPaletteColors = [
@@ -1135,8 +1624,8 @@
         "#aeb7bd",
         "#98a3ad",
         "#e0a7a1",
-        "#b6bcc6",
-        "#c3c7cf",
+        "#e8a090",
+        "#a0d4e8",
       ];
 
       let paletteColors = lightPaletteColors;
@@ -1145,12 +1634,12 @@
       const i18n = {
         es: {
           modalTitle: "Agregar bloque",
-          modalHint: "Click fuera del modal para cerrar. Se guarda automaticamente al cambiar.",
-          dayLabel: "Dia",
-          titleLabel: "Titulo",
+          modalHint: "Clic fuera del modal para cerrar. Se guarda automáticamente al cambiar.",
+          dayLabel: "Día",
+          titleLabel: "Título",
           titlePlaceholder: "Da un nombre corto",
-          titleRequired: "Titulo obligatorio",
-          descLabel: "Descripcion",
+          titleRequired: "Título obligatorio",
+          descLabel: "Descripción",
           descPlaceholder: "Notas adicionales",
           paletteLabel: "Paleta",
           saveBlock: "Guardar bloque",
@@ -1169,26 +1658,27 @@
           restoreWeekTitle: "Restaurar ejemplo",
           restoreWeekCancel: "Cancelar",
           restoreWeekConfirm: "Agregar ejemplo",
-          helpTitle: "Guia rapida",
-          helpIntro: "\u2328\ufe0f Atajos de teclado",
-          helpNavTitle: "\u2328\ufe0f Keyboard Shortcuts",
-          helpNavRow1: "semana anterior",
-          helpNavRow2: "semana siguiente",
-          helpNavRow3: "mes siguiente",
-          helpNavRow4: "mes anterior",
-          helpNavRow5: "Home: primera semana del a\u00f1o",
-          helpNavRow6: "End: ultima semana del a\u00f1o",
-          helpUiTitle: "\u{1F5A5}\ufe0f User Interface",
-          helpUiLang: "idioma: Espanol/Ingles",
-          helpUiTheme: "modo: oscuro o claro",
-          helpUiClear: "limpiar semana (si esta vacia: \u2795 agrega ejemplo)",
-          helpUiExport: "exportar: PNG o PDF",
+          helpTitle: "Guía Rápida",
+          helpNavTitle: "Atajos de Teclado",
+          helpNavRow1: "Semana anterior",
+          helpNavRow2: "Semana siguiente",
+          helpNavRow3: "Mes siguiente",
+          helpNavRow4: "Mes anterior",
+          helpNavRow5: "Home: Primera semana del año",
+          helpNavRow6: "End: Última semana del año",
+          helpUiTitle: "Interfaz de Usuario",
+          helpUiLang: "Idioma: Español/Inglés",
+          helpUiTheme: "Modo: Oscuro o claro",
+          helpUiClear: "Limpiar semana (si está vacía: + agrega ejemplo)",
+          helpUiExport: "Exportar: PNG o PDF",
+          helpDisclaimerLabel: "Aviso:",
+          helpDisclaimerBody: "Esta aplicación funciona localmente en el navegador. Cada navegador guarda su propio calendario de forma independiente. Cambiar de navegador o de dispositivo no borra tus datos: simplemente usarás un calendario nuevo en ese entorno. El calendario solo se elimina si se borran manualmente los datos del navegador donde fue creado.",
           confirmTitle: "Descartar cambios",
-          confirmMessage: "Tienes cambios sin guardar. Deseas cancelar?",
+          confirmMessage: "Tienes cambios sin guardar. ¿Deseas cancelar?",
           confirmStay: "Seguir editando",
           confirmDiscard: "Descartar",
           deleteConfirmTitle: "Eliminar bloque",
-          deleteConfirmMessage: "Seguro que quieres eliminar este bloque?",
+          deleteConfirmMessage: "¿Seguro que quieres eliminar este bloque?",
           deleteConfirmCancel: "Cancelar",
           deleteConfirmAction: "Eliminar bloque",
           moveTitle: "Mover bloque",
@@ -1225,20 +1715,21 @@
           restoreWeekTitle: "Restore sample",
           restoreWeekCancel: "Cancel",
           restoreWeekConfirm: "Add sample",
-          helpTitle: "Quick guide",
-          helpIntro: "\u2328\ufe0f Keyboard shortcuts",
-          helpNavTitle: "\u2328\ufe0f Keyboard Shortcuts",
-          helpNavRow1: "previous week",
-          helpNavRow2: "next week",
-          helpNavRow3: "next month",
-          helpNavRow4: "previous month",
-          helpNavRow5: "Home: first week of the year",
-          helpNavRow6: "End: last week of the year",
-          helpUiTitle: "\u{1F5A5}\ufe0f User Interface",
-          helpUiLang: "language: Spanish/English",
-          helpUiTheme: "mode: dark or light",
-          helpUiClear: "clear week (if empty: \u2795 add sample)",
-          helpUiExport: "export: PNG or PDF",
+          helpTitle: "Quick Guide",
+          helpNavTitle: "Keyboard Shortcuts",
+          helpNavRow1: "Previous week",
+          helpNavRow2: "Next week",
+          helpNavRow3: "Next month",
+          helpNavRow4: "Previous month",
+          helpNavRow5: "Home: First week of the year",
+          helpNavRow6: "End: Last week of the year",
+          helpUiTitle: "User Interface",
+          helpUiLang: "Language: Spanish/English",
+          helpUiTheme: "Mode: Dark or light",
+          helpUiClear: "Clear week (if empty: + add sample)",
+          helpUiExport: "Export: PNG or PDF",
+          helpDisclaimerLabel: "Notice:",
+          helpDisclaimerBody: "This app runs locally in your browser. Each browser saves its own calendar independently. Switching browsers or devices doesn't delete your data: you'll simply use a new calendar in that environment. Your calendar is only deleted if you manually clear the browser data where it was created.",
           confirmTitle: "Discard changes",
           confirmMessage: "You have unsaved changes. Do you want to cancel?",
           confirmStay: "Keep editing",
@@ -1273,7 +1764,7 @@
         ],
         [
           { title: "Inbox cero", description: "", color: paletteColors[5], type: "task" },
-          { title: "Gimnasio", description: "Sesion de tarde", color: paletteColors[7], type: "task" },
+          { title: "Gimnasio", description: "Sesión de tarde", color: paletteColors[7], type: "task" },
         ],
       ];
     }
@@ -1400,6 +1891,9 @@ const state = {
       let currentDropIndex = null;
       let formDirty = false;
       let monthLock = false;
+      const customSelectRegistry = new Map();
+      let activeCustomSelect = null;
+      registerCustomSelects();
 
       function clearDropMarker() {
         if (currentDropContainer) {
@@ -1433,6 +1927,118 @@ const state = {
           pointerDownOnBackdrop = false;
           onClose(event);
         });
+      }
+
+      function registerCustomSelects() {
+        document.querySelectorAll("select[data-custom]").forEach((selectEl) => {
+          if (!selectEl || customSelectRegistry.has(selectEl)) return;
+          const wrapper = document.createElement("div");
+          wrapper.className = "custom-select-wrapper";
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "custom-select-button";
+          button.setAttribute("aria-haspopup", "listbox");
+          button.setAttribute("aria-expanded", "false");
+          const valueSpan = document.createElement("span");
+          valueSpan.className = "custom-select-value";
+          const arrowSpan = document.createElement("span");
+          arrowSpan.className = "custom-select-arrow";
+          arrowSpan.textContent = "▾";
+          button.append(valueSpan, arrowSpan);
+          const panel = document.createElement("div");
+          panel.className = "custom-select-panel";
+          panel.setAttribute("role", "listbox");
+          panel.setAttribute("tabindex", "-1");
+          selectEl.parentNode.insertBefore(wrapper, selectEl);
+          wrapper.append(button, panel, selectEl);
+          selectEl.classList.add("hidden-native-select");
+          selectEl.setAttribute("aria-hidden", "true");
+          selectEl.tabIndex = -1;
+          const record = { selectEl, wrapper, button, panel, valueSpan };
+          customSelectRegistry.set(selectEl, record);
+          button.addEventListener("click", (event) => {
+            event.preventDefault();
+            toggleCustomSelect(record);
+          });
+          panel.addEventListener("click", (event) => {
+            const optionButton = event.target.closest("[data-value]");
+            if (!optionButton || optionButton.disabled) return;
+            selectEl.value = optionButton.dataset.value;
+            selectEl.dispatchEvent(new Event("change", { bubbles: true }));
+            closeCustomSelect(record);
+          });
+          selectEl.addEventListener("change", () => {
+            updateCustomSelectDisplay(record);
+          });
+          updateCustomSelect(record);
+        });
+      }
+
+      function updateCustomSelect(record) {
+        const { selectEl, panel } = record;
+        panel.innerHTML = "";
+        selectEl.querySelectorAll("option").forEach((option) => {
+          const optionButton = document.createElement("button");
+          optionButton.type = "button";
+          optionButton.className = "custom-select-option";
+          optionButton.dataset.value = option.value;
+          optionButton.textContent = option.textContent;
+          if (option.disabled) {
+            optionButton.disabled = true;
+          }
+          panel.appendChild(optionButton);
+        });
+        updateCustomSelectDisplay(record);
+      }
+
+      function updateCustomSelectDisplay(record) {
+        const { selectEl, button, valueSpan, panel } = record;
+        const selectedOption = selectEl.options[selectEl.selectedIndex];
+        valueSpan.textContent = selectedOption ? selectedOption.textContent : "";
+        panel.querySelectorAll(".custom-select-option").forEach((elem) => {
+          elem.classList.toggle("is-selected", elem.dataset.value === selectEl.value);
+        });
+        button.setAttribute("aria-expanded", panel.classList.contains("open") ? "true" : "false");
+      }
+
+      function toggleCustomSelect(record) {
+        const isOpen = record.panel.classList.contains("open");
+        closeAllCustomSelects();
+        if (!isOpen) {
+          record.panel.classList.add("open");
+          record.button.setAttribute("aria-expanded", "true");
+          activeCustomSelect = record;
+        }
+      }
+
+      function closeCustomSelect(record) {
+        if (record.panel.classList.contains("open")) {
+          record.panel.classList.remove("open");
+          record.button.setAttribute("aria-expanded", "false");
+          if (activeCustomSelect === record) {
+            activeCustomSelect = null;
+          }
+        }
+      }
+
+      function closeAllCustomSelects() {
+        customSelectRegistry.forEach((record) => {
+          closeCustomSelect(record);
+        });
+      }
+
+      document.addEventListener("click", (event) => {
+        customSelectRegistry.forEach((record) => {
+          if (!record.wrapper.contains(event.target)) {
+            closeCustomSelect(record);
+          }
+        });
+      });
+
+      function refreshCustomSelect(selectEl) {
+        const record = customSelectRegistry.get(selectEl);
+        if (!record) return;
+        updateCustomSelect(record);
       }
 
       function showDropMarker(container, beforeElement, insertIndex) {
@@ -1629,6 +2235,7 @@ const state = {
           if (yr === state.year) option.selected = true;
           yearSelect.appendChild(option);
         });
+        refreshCustomSelect(yearSelect);
       }
 
       function syncSelectWidth(select, display, textOverride = "") {
@@ -1661,6 +2268,7 @@ const state = {
           monthSelect.appendChild(option);
         }
         syncSelectWidth(monthSelect, monthDisplay, monthDisplayText?.textContent || "");
+        refreshCustomSelect(monthSelect);
       }
 
       function getISOWeekDates(week, year, locale) {
@@ -1680,8 +2288,8 @@ const state = {
           date: current.getUTCDate(),
           monthIndex: current.getUTCMonth(),
           year: current.getUTCFullYear(),
-          month: current.toLocaleString(locale, { month: "long" }),
-          name: current.toLocaleString(locale, { weekday: "long" }),
+          month: current.toLocaleString(locale, { month: "long" }).replace(/^./, c => c.toUpperCase()),
+          name: current.toLocaleString(locale, { weekday: "long" }).replace(/^./, c => c.toUpperCase()),
           isWeekend: dayIndex === 0 || dayIndex === 6,
         });
         }
@@ -1717,6 +2325,131 @@ const state = {
         return Object.values(weekTasks).every((tasks) => !tasks || tasks.length === 0);
       }
 
+      function countBlocksInWeek(week, year) {
+        const weekKey = getWeekKey(week, year);
+        const weekTasks = state.tasks[weekKey];
+        if (!weekTasks) return 0;
+        return Object.values(weekTasks).reduce((sum, tasks) => sum + (tasks?.length || 0), 0);
+      }
+
+      function getWeekPrimaryMonth(week, year) {
+        const days = getISOWeekDates(week, year, "en-US");
+        // Find the last day that belongs to the specified year
+        // This handles week 1 (might start in prev year) and week 53 (might end in next year)
+        for (let i = 6; i >= 0; i--) {
+          if (days[i].year === year) {
+            return days[i].monthIndex;
+          }
+        }
+        // Fallback: use first day in the correct year
+        for (let i = 0; i < 7; i++) {
+          if (days[i].year === year) {
+            return days[i].monthIndex;
+          }
+        }
+        return days[0].monthIndex;
+      }
+
+      function getWeekMonthsInYear(week, year) {
+        // Returns only the months that belong to the specified year
+        const days = getISOWeekDates(week, year, "en-US");
+        const monthsInYear = new Set();
+        days.forEach(day => {
+          if (day.year === year) {
+            monthsInYear.add(day.monthIndex);
+          }
+        });
+        return monthsInYear;
+      }
+
+      function renderWeekDots() {
+        const container = document.getElementById("week-dots-strip");
+        if (!container) return;
+        container.innerHTML = "";
+        const totalWeeks = getWeeksInYear(state.year);
+        const prefix = i18n[state.lang]?.weekPrefix || "W";
+        const locale = state.lang === "es" ? "es-ES" : "en-US";
+
+        // Get current week's months (only those in the current year)
+        const highlightedMonths = getWeekMonthsInYear(state.week, state.year);
+
+        // Group weeks by month
+        const monthGroups = new Map();
+        for (let week = 1; week <= totalWeeks; week++) {
+          const monthIndex = getWeekPrimaryMonth(week, state.year);
+          if (!monthGroups.has(monthIndex)) {
+            const monthName = new Date(Date.UTC(state.year, monthIndex, 1))
+              .toLocaleString(locale, { month: "short" }).replace(".", "");
+            monthGroups.set(monthIndex, {
+              monthIndex,
+              monthName: monthName.charAt(0).toUpperCase() + monthName.slice(1),
+              weeks: []
+            });
+          }
+          monthGroups.get(monthIndex).weeks.push(week);
+        }
+
+        // Create content container
+        const content = document.createElement("div");
+        content.className = "week-dots-content";
+
+        // Create month groups
+        monthGroups.forEach((group) => {
+          const monthGroup = document.createElement("div");
+          monthGroup.className = "week-dots-month-group";
+          if (highlightedMonths.has(group.monthIndex)) {
+            monthGroup.classList.add("is-current-month");
+          }
+
+          // Dots container
+          const dotsContainer = document.createElement("div");
+          dotsContainer.className = "week-dots-month-dots";
+
+          // Create dots for each week in this month
+          group.weeks.forEach((week) => {
+            const dot = document.createElement("div");
+            dot.className = "week-dot";
+            dot.dataset.week = week;
+
+            const blockCount = countBlocksInWeek(week, state.year);
+            if (blockCount > 0) {
+              dot.classList.add("has-content");
+            }
+
+            if (week === state.week) {
+              dot.classList.add("is-current");
+            }
+
+            const tooltip = document.createElement("span");
+            tooltip.className = "week-dot-tooltip";
+            const blockLabel = state.lang === "es"
+              ? (blockCount === 1 ? "bloque" : "bloques")
+              : (blockCount === 1 ? "block" : "blocks");
+            tooltip.textContent = `${prefix}${String(week).padStart(2, "0")} · ${blockCount} ${blockLabel}`;
+            dot.appendChild(tooltip);
+
+            dot.addEventListener("click", () => {
+              state.week = week;
+              weekSelect.value = state.week;
+              renderCalendar();
+            });
+
+            dotsContainer.appendChild(dot);
+          });
+
+          // Month label
+          const label = document.createElement("span");
+          label.className = "week-dots-month-label";
+          label.textContent = group.monthName;
+
+          monthGroup.appendChild(dotsContainer);
+          monthGroup.appendChild(label);
+          content.appendChild(monthGroup);
+        });
+
+        container.appendChild(content);
+      }
+
       function clearCurrentWeek() {
         const weekKey = getWeekKey(state.week, state.year);
         if (state.tasks[weekKey]) {
@@ -1724,6 +2457,7 @@ const state = {
         }
         saveTasks(state.tasks);
         renderTasks();
+        renderWeekDots();
       }
 
       function restoreSampleWeek() {
@@ -1746,6 +2480,7 @@ const state = {
         }
         saveTasks(state.tasks);
         renderTasks();
+        renderWeekDots();
       }
 
       function renderWeekOptions() {
@@ -1758,6 +2493,7 @@ const state = {
           if (i === state.week) option.selected = true;
           weekSelect.appendChild(option);
         }
+        refreshCustomSelect(weekSelect);
       }
 
       function populateMoveYearOptions(selectedYear = state.year) {
@@ -1770,6 +2506,7 @@ const state = {
           if (yr === selectedYear) option.selected = true;
           moveYearSelect.appendChild(option);
         });
+        refreshCustomSelect(moveYearSelect);
       }
 
       function populateMoveWeekOptions(year, defaultWeek = state.week) {
@@ -1784,6 +2521,7 @@ const state = {
           if (wk === defaultWeek) option.selected = true;
           moveWeekSelect.appendChild(option);
         }
+        refreshCustomSelect(moveWeekSelect);
       }
 
       function updateMoveDayOptions(preferredDay = null) {
@@ -1807,6 +2545,7 @@ const state = {
         if (!matched && days.length) {
           moveDaySelect.value = days[0].date;
         }
+        refreshCustomSelect(moveDaySelect);
       }
 
       function openMoveOverlay() {
@@ -1853,6 +2592,7 @@ const state = {
           lastSelectedDay = days[0].date;
         }
         taskDaySelect.value = lastSelectedDay;
+        refreshCustomSelect(taskDaySelect);
         const weekLabel = `${i18n[state.lang].weekSelect} ${state.week}`;
         weekText.textContent = weekLabel;
         if (!monthLock) {
@@ -1916,6 +2656,7 @@ const state = {
           calendarGrid.appendChild(createDayCell(day));
         });
         renderTasks();
+        renderWeekDots();
       }
 
       function getTasksForDay(day) {
@@ -1994,6 +2735,7 @@ const state = {
         tasks.push({ title, description, color, type });
         setTasksForDay(day, tasks);
         renderTasks();
+        renderWeekDots();
       }
 
       function handleDrop(event) {
@@ -2036,6 +2778,7 @@ const state = {
         setTasksForDay(targetDay, destination);
         clearDropMarker();
         renderTasks();
+        renderWeekDots();
       }
 
       function selectPaletteColor(color, markDirty = true) {
@@ -2099,6 +2842,7 @@ const state = {
         if (fallback !== null) {
           taskDaySelect.value = fallback;
           lastSelectedDay = fallback;
+          refreshCustomSelect(taskDaySelect);
         }
         if (task) {
           editingTask = { day, index };
@@ -2174,6 +2918,7 @@ const state = {
             setTasksForDay(day, destination);
           }
           renderTasks();
+          renderWeekDots();
         } else {
           addTask(day, title, desc, color);
         }
@@ -2192,6 +2937,7 @@ const state = {
         setTasksForDay(editingTask.day, tasks);
         editingTask = null;
         renderTasks();
+        renderWeekDots();
         closeModal(true, true);
       }
 
@@ -2365,12 +3111,31 @@ const state = {
       });
 
       document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeAllCustomSelects();
+          if (moveOverlay && moveOverlay.classList.contains("visible")) {
+            moveOverlay.classList.remove("visible");
+            event.preventDefault();
+            return;
+          }
+          if (deleteConfirmOverlay && deleteConfirmOverlay.classList.contains("visible")) {
+            deleteConfirmOverlay.classList.remove("visible");
+            event.preventDefault();
+            return;
+          }
+          if (modalOverlay.classList.contains("visible")) {
+            closeModal(true);
+            event.preventDefault();
+            return;
+          }
+        }
         if (
           event.target &&
           (event.target.tagName === "INPUT" ||
             event.target.tagName === "TEXTAREA" ||
             event.target.tagName === "SELECT" ||
-            event.target.isContentEditable)
+            event.target.isContentEditable) &&
+          event.key !== "Escape"
         ) {
           return;
         }
