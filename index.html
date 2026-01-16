@@ -27,6 +27,7 @@
         --shadow-deep: 0 25px 55px rgba(5, 8, 23, 0.15);
         --select-hover: rgba(82, 139, 255, 0.08);
         --select-selected: rgba(82, 139, 255, 0.12);
+        --today-border: #8dc5ff;
       }
 
       body {
@@ -36,6 +37,10 @@
         background: var(--page-bg);
         color: var(--text);
         min-height: 100vh;
+      }
+
+      body.app-loading {
+        overflow: hidden;
       }
 
       label, input, select, textarea, option {
@@ -103,6 +108,12 @@
         display: flex;
         flex-direction: column;
         gap: 32px;
+        opacity: 1;
+        transition: opacity 0.2s ease;
+      }
+
+      body.app-loading .page {
+        opacity: 0;
       }
 
       header {
@@ -111,6 +122,18 @@
         align-items: center;
         gap: 16px;
         flex-wrap: wrap;
+      }
+
+      .header-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: auto;
+        flex-wrap: wrap;
+      }
+
+      .header-actions .action-group {
+        margin-left: 0;
       }
 
       .week-info {
@@ -489,10 +512,15 @@
         flex-direction: column;
         gap: 8px;
         background: var(--surface);
+        position: relative;
       }
 
       .day-cell.weekend {
         background: var(--surface-strong);
+      }
+
+      .day-cell.is-today {
+        border-top: none;
       }
 
       html.dark body .day-cell.weekend {
@@ -549,6 +577,16 @@
 
       .calendar-grid > .day-cell:nth-child(-n + 7) {
         border-top: none;
+      }
+
+      .day-cell.is-today::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 3px;
+        background: var(--today-border);
       }
 
       .day-header {
@@ -641,6 +679,45 @@
       .calendar-wrapper.exporting .day-add-slot,
       .calendar-wrapper.exporting .task-block .edit-icon {
         visibility: hidden;
+      }
+
+      .calendar-wrapper.exporting .day-cell.is-today {
+        border-top: none;
+      }
+
+      .calendar-wrapper.exporting .day-cell.is-today::before {
+        display: none;
+      }
+
+      .today-button {
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        padding: 0 20px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: var(--shadow);
+        transition: none;
+        height: 56px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .today-button:hover {
+        border-color: #999;
+      }
+
+      html.dark body .today-button {
+        background: var(--surface);
+        border-color: #2a2f4c;
+        color: var(--text);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+      }
+
+      .today-button.is-hidden {
+        display: none;
       }
 
       .modal-overlay {
@@ -1353,11 +1430,12 @@
 
     </style>
   </head>
-  <body>
+  <body class="app-loading">
     <div class="page">
       <header>
-        
-        <div class="action-group">
+        <div class="header-actions">
+          <button id="today-button" class="today-button" data-i18n="todayButton">Hoy</button>
+          <div class="action-group">
           <button id="language-toggle" class="language-toggle" aria-label="Language">
             <span data-lang="es">ES</span>
             <span data-lang="en">EN</span>
@@ -1376,6 +1454,7 @@
             <option value="png">PNG</option>
             <option value="pdf">PDF</option>
           </select>
+          </div>
         </div>
       </header>
 
@@ -1673,6 +1752,7 @@
           helpUiTheme: "Modo: Oscuro o claro",
           helpUiClear: "Limpiar semana (si está vacía: + agrega ejemplo)",
           helpUiExport: "Exportar: PNG o PDF",
+          todayButton: "Hoy",
           helpDisclaimerLabel: "Aviso:",
           helpDisclaimerBody: "Esta aplicación funciona localmente en el navegador. Cada navegador guarda su propio calendario de forma independiente. Cambiar de navegador o de dispositivo no borra tus datos: simplemente usarás un calendario nuevo en ese entorno. El calendario solo se elimina si se borran manualmente los datos del navegador donde fue creado.",
           confirmTitle: "Descartar cambios",
@@ -1730,6 +1810,7 @@
           helpUiTheme: "Mode: Dark or light",
           helpUiClear: "Clear week (if empty: + add sample)",
           helpUiExport: "Export: PNG or PDF",
+          todayButton: "Today",
           helpDisclaimerLabel: "Notice:",
           helpDisclaimerBody: "This app runs locally in your browser. Each browser saves its own calendar independently. Switching browsers or devices doesn't delete your data: you'll simply use a new calendar in that environment. Your calendar is only deleted if you manually clear the browser data where it was created.",
           confirmTitle: "Discard changes",
@@ -1828,6 +1909,32 @@ function saveTasks(tasks) {
   }
 }
 
+const LAST_VIEW_KEY = "simpleCalendarLastView";
+const HAS_VISITED_KEY = "simpleCalendarHasVisited";
+
+function loadLastView() {
+  try {
+    const raw = localStorage.getItem(LAST_VIEW_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") return null;
+    return parsed;
+  } catch (error) {
+    return null;
+  }
+}
+
+function saveLastView() {
+  try {
+    localStorage.setItem(
+      LAST_VIEW_KEY,
+      JSON.stringify({ week: state.week, year: state.year })
+    );
+  } catch (error) {
+    return;
+  }
+}
+
 const state = {
   week: 3,
   year: 2026,
@@ -1837,6 +1944,58 @@ const state = {
   color: lightPaletteColors[0],
   tasks: loadTasks() || defaultTasks,
 };
+      function getTodayUTCParts() {
+        const now = new Date();
+        return {
+          year: now.getUTCFullYear(),
+          monthIndex: now.getUTCMonth(),
+          date: now.getUTCDate(),
+        };
+      }
+
+      function ensureYearOption(year) {
+        if (!years.includes(year)) {
+          years.push(year);
+          years.sort((a, b) => a - b);
+        }
+      }
+
+      function setStateToToday() {
+        const now = new Date();
+        const currentWeek = getISOWeekNumber(now);
+        const currentYear = now.getUTCFullYear();
+        ensureYearOption(currentYear);
+        state.year = currentYear;
+        state.week = currentWeek;
+        state.month = null;
+      }
+
+      function updateTodayButtonVisibility() {
+        if (!todayButton) return;
+        const now = new Date();
+        const currentWeek = getISOWeekNumber(now);
+        const currentYear = now.getUTCFullYear();
+        const isCurrentWeek = state.week === currentWeek && state.year === currentYear;
+        todayButton.classList.toggle("is-hidden", isCurrentWeek);
+      }
+
+      function initStateFromStorage() {
+        const hasVisited = localStorage.getItem(HAS_VISITED_KEY);
+        if (!hasVisited) {
+          setStateToToday();
+          localStorage.setItem(HAS_VISITED_KEY, "1");
+          return;
+        }
+        const lastView = loadLastView();
+        if (lastView && Number.isInteger(lastView.week) && Number.isInteger(lastView.year)) {
+          ensureYearOption(lastView.year);
+          state.year = lastView.year;
+          state.week = lastView.week;
+          state.month = null;
+          return;
+        }
+        setStateToToday();
+      }
       let editingTask = null;
 
       const calendarGrid = document.getElementById("calendar-grid");
@@ -1872,6 +2031,7 @@ const state = {
       const helpToggle = document.getElementById("help-toggle");
       const helpOverlay = document.getElementById("help-overlay");
       const helpClose = document.getElementById("help-close");
+      const todayButton = document.getElementById("today-button");
       const restoreWeekOverlay = document.getElementById("restore-week-overlay");
       const restoreWeekMessage = document.getElementById("restore-week-message");
       const restoreWeekCancel = document.getElementById("restore-week-cancel");
@@ -2629,6 +2789,9 @@ const state = {
         if (day.isWeekend) {
           cell.classList.add("weekend");
         }
+        if (day.isToday) {
+          cell.classList.add("is-today");
+        }
         cell.dataset.day = day.date;
         cell.innerHTML = `
           <div class="day-header">
@@ -2653,12 +2816,25 @@ const state = {
         renderWeekOptions();
         renderMonthOptions(locale);
         const days = getISOWeekDates(state.week, state.year, locale);
+        const today = getTodayUTCParts();
+        days.forEach((day) => {
+          day.isToday =
+            day.year === today.year &&
+            day.monthIndex === today.monthIndex &&
+            day.date === today.date;
+        });
         updateControls(days);
         days.forEach((day) => {
           calendarGrid.appendChild(createDayCell(day));
         });
         renderTasks();
         renderWeekDots();
+        saveLastView();
+        updateTodayButtonVisibility();
+      }
+
+      function markAppReady() {
+        document.body.classList.remove("app-loading");
       }
 
       function getTasksForDay(day) {
@@ -3039,6 +3215,16 @@ const state = {
         setThemeToggleIcon();
       });
 
+      if (todayButton) {
+        todayButton.addEventListener("click", () => {
+          setStateToToday();
+          renderYearOptions();
+          yearSelect.value = state.year;
+          weekSelect.value = state.week;
+          renderCalendar();
+        });
+      }
+
       weekSelect.addEventListener("change", (event) => {
         state.week = Number(event.target.value);
         renderCalendar();
@@ -3275,6 +3461,7 @@ const state = {
         }
       }
 
+      initStateFromStorage();
       renderYearOptions();
       const savedLang = localStorage.getItem("simpleCalendarLang");
       if (savedLang && i18n[savedLang]) {
@@ -3291,6 +3478,7 @@ const state = {
         setThemeToggleIcon();
       }
       renderCalendar();
+      markAppReady();
     </script>
   </body>
 </html>
