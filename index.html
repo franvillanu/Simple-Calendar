@@ -35,10 +35,6 @@
         min-height: 100vh;
       }
 
-      select {
-        padding-inline-end: 34px;
-      }
-
       html.dark body {
         --surface: #1a1a1a;
         --surface-strong: #1f1f1f;
@@ -728,13 +724,27 @@
         border-radius: 12px;
         border: 1px solid var(--border);
         padding: 12px 16px;
-        padding-right: 40px;
         margin-top: 6px;
         margin-bottom: 12px;
         background: var(--surface-strong);
         font-size: 1rem;
         color: var(--text);
         box-sizing: border-box;
+      }
+
+      .custom-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M2 2l4 4 4-4' stroke='%23333' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        background-size: 12px;
+        padding-right: 44px;
+      }
+
+      .custom-select::-ms-expand {
+        display: none;
       }
 
       .modal textarea {
@@ -909,7 +919,7 @@
               <button type="button" data-format="pdf">📄 PDF</button>
             </div>
           </div>
-          <select id="export-format" class="export-select" aria-hidden="true" tabindex="-1">
+          <select id="export-format" class="export-select custom-select" aria-hidden="true" tabindex="-1">
             <option value="png">PNG</option>
             <option value="pdf">PDF</option>
           </select>
@@ -926,7 +936,7 @@
               <button id="prev-month" aria-label="Previous month">&lsaquo;</button>
               <span class="month-display" id="month-display">
                 <span id="month-display-text">Enero</span>
-                <select id="month-select" aria-label="Month"></select>
+                <select id="month-select" class="custom-select" aria-label="Month"></select>
               </span>
               <button id="next-month" aria-label="Next month">&rsaquo;</button>
             </div>
@@ -937,7 +947,7 @@
             </div>
             <div class="calendar-controls calendar-week-controls">
               <button id="prev-week" aria-label="Previous week">&lsaquo;</button>
-              <select id="week-select" aria-label="Week"></select>
+              <select id="week-select" class="custom-select" aria-label="Week"></select>
               <button id="next-week" aria-label="Next week">&rsaquo;</button>
             </div>
           </div>
@@ -945,7 +955,7 @@
             <span class="calendar-static" id="year-text">2026</span>
             <div class="calendar-controls calendar-year-controls">
               <button id="prev-year" aria-label="Previous year">&lsaquo;</button>
-              <select id="year-select" aria-label="Year"></select>
+              <select id="year-select" class="custom-select" aria-label="Year"></select>
               <button id="next-year" aria-label="Next year">&rsaquo;</button>
             </div>
           </div>
@@ -961,7 +971,7 @@
         <p class="fullscreen-warning" data-i18n="modalHint" style="display:none;"></p>
         <form id="task-form">
           <label for="task-day" data-i18n="dayLabel">Dia</label>
-          <select id="task-day" name="day"></select>
+          <select id="task-day" name="day" class="custom-select"></select>
 
           <label for="task-title" data-i18n="titleLabel">Titulo</label>
           <input id="task-title" name="title" data-i18n-placeholder="titlePlaceholder" />
@@ -1018,11 +1028,11 @@
       <div class="modal confirm-modal" role="dialog" aria-modal="true">
         <h2 data-i18n="moveTitle">Mover bloque</h2>
         <label for="move-year" data-i18n="moveYearLabel">Año</label>
-        <select id="move-year"></select>
+        <select id="move-year" class="custom-select"></select>
         <label for="move-week" data-i18n="moveWeekLabel">Semana</label>
-        <select id="move-week"></select>
+        <select id="move-week" class="custom-select"></select>
         <label for="move-day" data-i18n="moveDayLabel">Día</label>
-        <select id="move-day"></select>
+        <select id="move-day" class="custom-select"></select>
         <div class="modal-actions">
           <button type="button" class="secondary" id="move-cancel" data-i18n="moveCancel">Cancelar</button>
           <button type="button" class="primary" id="move-confirm" data-i18n="moveConfirm">Mover bloque</button>
