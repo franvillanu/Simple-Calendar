@@ -32,9 +32,18 @@
       body {
         margin: 0;
         font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-weight: normal;
         background: var(--page-bg);
         color: var(--text);
         min-height: 100vh;
+      }
+
+      label, input, select, textarea, option {
+        font-weight: normal !important;
+      }
+
+      button {
+        font-weight: 600 !important;
       }
 
       body,
@@ -690,6 +699,18 @@
         font-weight: 700;
       }
 
+      .confirm-modal label {
+        margin-top: 16px;
+      }
+
+      .confirm-modal label:first-of-type {
+        margin-top: 8px;
+      }
+
+      .confirm-modal select {
+        margin-bottom: 0;
+      }
+
       .help-list {
         width: 100%;
         display: flex;
@@ -742,7 +763,102 @@
       }
 
       .help-sep {
-        opacity: 0.6;
+        opacity: 0.5;
+      }
+
+      .help-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        width: 100%;
+      }
+
+      .help-section {
+        width: 100%;
+      }
+
+      .help-section-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--muted);
+        margin-bottom: 12px;
+        padding-left: 4px;
+      }
+
+      .help-section-label .icon {
+        font-size: 1rem;
+      }
+
+      .help-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px 20px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      html.dark .help-card {
+        background: var(--surface-strong);
+        border-color: var(--border);
+      }
+
+      .help-card .help-list {
+        font-size: 1rem;
+        gap: 6px;
+      }
+
+      .help-card .help-row {
+        font-size: 0.95rem;
+        gap: 14px;
+      }
+
+      .help-card .help-key {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 36px;
+        height: 32px;
+        padding: 0 10px;
+        background: var(--surface-strong);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      html.dark .help-card .help-key {
+        background: var(--surface);
+      }
+
+      .help-disclaimer {
+        background: rgba(255, 220, 150, 0.25);
+        border: 1px solid rgba(200, 160, 80, 0.3);
+        border-radius: 12px;
+        padding: 16px 18px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: var(--text);
+        margin-top: 8px;
+      }
+
+      .help-disclaimer strong {
+        color: #b8860b;
+        font-weight: 600;
+      }
+
+      html.dark .help-disclaimer {
+        background: rgba(180, 140, 60, 0.15);
+        border-color: rgba(180, 140, 60, 0.25);
+      }
+
+      html.dark .help-disclaimer strong {
+        color: #daa520;
       }
 
       .modal h2 {
@@ -750,13 +866,24 @@
         font-size: 1.2rem;
       }
 
+      #help-overlay .modal h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
       .modal label {
         font-size: 0.75rem;
+        font-weight: normal !important;
         text-transform: uppercase;
         letter-spacing: 0.4px;
         color: var(--muted);
-        display: inline-block;
-        margin-bottom: 6px;
+        display: block;
+        margin-bottom: 8px;
+        margin-top: 18px;
+      }
+
+      .modal label:first-of-type {
+        margin-top: 0;
       }
 
       .modal input,
@@ -766,10 +893,11 @@
         border-radius: 12px;
         border: 1px solid var(--border);
         padding: 12px 16px;
-        margin-top: 6px;
-        margin-bottom: 12px;
+        margin-top: 0;
+        margin-bottom: 0;
         background: var(--surface-strong);
         font-size: 1rem;
+        font-weight: normal;
         color: var(--text);
         box-sizing: border-box;
       }
@@ -793,7 +921,7 @@
         justify-content: space-between;
         align-items: center;
         font-size: 1rem;
-        font-weight: 400;
+        font-weight: normal !important;
         color: var(--text);
         cursor: pointer;
         box-shadow: inset 0 0 0 1px rgba(15, 18, 23, 0.04);
@@ -822,6 +950,7 @@
         transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
         z-index: 12;
         padding: 0;
+        font-weight: normal !important;
       }
 
       .custom-select-panel.open {
@@ -839,7 +968,7 @@
         font-size: 1rem;
         color: var(--text);
         cursor: pointer;
-        font-weight: 400;
+        font-weight: normal !important;
         line-height: 1.4;
         border-radius: 0;
       }
@@ -913,16 +1042,21 @@
         margin-top: 6px;
       }
 
+      #move-overlay .modal-actions {
+        margin-top: 24px;
+      }
+
       .field-error {
-        font-size: 0.8rem;
-        color: #b42318;
-        margin-top: -6px;
-        margin-bottom: 10px;
+        font-size: 0.75rem;
+        color: #c53030;
+        margin-top: 6px;
+        margin-bottom: 0;
+        padding-left: 2px;
         display: none;
       }
 
       html.dark body .field-error {
-        color: #ffb4b4;
+        color: #fc8181;
       }
 
       .modal button {
@@ -1384,62 +1518,83 @@
     <div id="help-overlay" class="modal-overlay">
       <div class="modal" role="dialog" aria-modal="true">
         <button class="close-btn" id="help-close" aria-label="Close help">&times;</button>
-        <h2 data-i18n="helpTitle">Guia rapida</h2>
-        <div class="modal-actions" style="margin-top:0;">
-          <div class="help-list">
-            <p class="help-section-title"><strong data-i18n="helpNavTitle">Atajos de teclado</strong></p>
-            <div class="help-row">
-              <span class="help-key">&#x2B05;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow1">semana anterior</span>
+        <h2 data-i18n="helpTitle">Guía Rápida</h2>
+        <div class="help-cards-container">
+          <div class="help-section">
+            <div class="help-section-label">
+              <span class="icon">&#x2328;&#xFE0F;</span>
+              <span data-i18n="helpNavTitle">Atajos de Teclado</span>
             </div>
-            <div class="help-row">
-              <span class="help-key">&#x27A1;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow2">semana siguiente</span>
+            <div class="help-card">
+              <div class="help-list">
+                <div class="help-row">
+                  <span class="help-key">&#x2B05;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow1">Semana anterior</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x27A1;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow2">Semana siguiente</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x2B06;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow3">Mes siguiente</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x2B07;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow4">Mes anterior</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x1F3E0;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow5">Home: Primera semana del año</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x1F51A;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpNavRow6">End: Última semana del año</span>
+                </div>
+              </div>
             </div>
-            <div class="help-row">
-              <span class="help-key">&#x2B06;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow3">mes siguiente</span>
-            </div>
-            <div class="help-row">
-              <span class="help-key">&#x2B07;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow4">mes anterior</span>
-            </div>
-            <div class="help-row">
-              <span class="help-key">&#x1F3E0;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow5">Home: primera semana del ano</span>
-            </div>
-            <div class="help-row section-end">
-              <span class="help-key">&#x1F51A;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpNavRow6">End: ultima semana del ano</span>
-            </div>
+          </div>
 
-            <p class="help-section-title"><strong data-i18n="helpUiTitle">UI</strong></p>
-            <div class="help-row">
-              <span class="help-key">&#x1F1EA;&#x1F1F8;/&#x1F1EC;&#x1F1E7;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpUiLang">idioma: Espanol/Ingles (por defecto Espanol)</span>
+          <div class="help-section">
+            <div class="help-section-label">
+              <span class="icon">&#x1F5A5;&#xFE0F;</span>
+              <span data-i18n="helpUiTitle">Interfaz de Usuario</span>
             </div>
-            <div class="help-row">
-              <span class="help-key">&#x1F319;/&#x2600;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpUiTheme">modo: oscuro o claro</span>
+            <div class="help-card">
+              <div class="help-list">
+                <div class="help-row">
+                  <span class="help-key">ES/GB</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpUiLang">Idioma: Español/Inglés</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x1F319;/&#x2600;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpUiTheme">Modo: Oscuro o claro</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x1F5D1;&#xFE0F;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpUiClear">Limpiar semana (si está vacía: + agrega ejemplo)</span>
+                </div>
+                <div class="help-row">
+                  <span class="help-key">&#x1F4E4;</span>
+                  <span class="help-sep">:</span>
+                  <span class="help-desc" data-i18n="helpUiExport">Exportar: PNG o PDF</span>
+                </div>
+              </div>
             </div>
-            <div class="help-row">
-              <span class="help-key">&#x1F5D1;&#xFE0F;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpUiClear">limpiar semana (si esta vacia: &#x2795; agrega ejemplo)</span>
-            </div>
-            <div class="help-row">
-              <span class="help-key">&#x1F4E4;</span>
-              <span class="help-sep">:</span>
-              <span class="help-desc" data-i18n="helpUiExport">exportar: PNG o PDF</span>
-            </div>
+          </div>
+
+          <div class="help-disclaimer">
+            <strong data-i18n="helpDisclaimerLabel">Aviso:</strong>
+            <span data-i18n="helpDisclaimerBody">Esta aplicación funciona localmente en el navegador. Cada navegador guarda su propio calendario de forma independiente. Cambiar de navegador o de dispositivo no borra tus datos: simplemente usarás un calendario nuevo en ese entorno. El calendario solo se elimina si se borran manualmente los datos del navegador donde fue creado.</span>
           </div>
         </div>
       </div>
@@ -1456,8 +1611,8 @@
         "#ecf0f1",
         "#e5e7e9",
         "#fadbd8",
-        "#f8f8f8",
-        "#f9f9f9",
+        "#ffd9ca",
+        "#dcf6ff",
       ];
 
       const darkPaletteColors = [
@@ -1469,8 +1624,8 @@
         "#aeb7bd",
         "#98a3ad",
         "#e0a7a1",
-        "#b6bcc6",
-        "#c3c7cf",
+        "#e8a090",
+        "#a0d4e8",
       ];
 
       let paletteColors = lightPaletteColors;
@@ -1479,12 +1634,12 @@
       const i18n = {
         es: {
           modalTitle: "Agregar bloque",
-          modalHint: "Click fuera del modal para cerrar. Se guarda automaticamente al cambiar.",
-          dayLabel: "Dia",
-          titleLabel: "Titulo",
+          modalHint: "Clic fuera del modal para cerrar. Se guarda automáticamente al cambiar.",
+          dayLabel: "Día",
+          titleLabel: "Título",
           titlePlaceholder: "Da un nombre corto",
-          titleRequired: "Titulo obligatorio",
-          descLabel: "Descripcion",
+          titleRequired: "Título obligatorio",
+          descLabel: "Descripción",
           descPlaceholder: "Notas adicionales",
           paletteLabel: "Paleta",
           saveBlock: "Guardar bloque",
@@ -1503,26 +1658,27 @@
           restoreWeekTitle: "Restaurar ejemplo",
           restoreWeekCancel: "Cancelar",
           restoreWeekConfirm: "Agregar ejemplo",
-          helpTitle: "Guia rapida",
-          helpIntro: "\u2328\ufe0f Atajos de teclado",
-          helpNavTitle: "\u2328\ufe0f Keyboard Shortcuts",
-          helpNavRow1: "semana anterior",
-          helpNavRow2: "semana siguiente",
-          helpNavRow3: "mes siguiente",
-          helpNavRow4: "mes anterior",
-          helpNavRow5: "Home: primera semana del a\u00f1o",
-          helpNavRow6: "End: ultima semana del a\u00f1o",
-          helpUiTitle: "\u{1F5A5}\ufe0f User Interface",
-          helpUiLang: "idioma: Espanol/Ingles",
-          helpUiTheme: "modo: oscuro o claro",
-          helpUiClear: "limpiar semana (si esta vacia: \u2795 agrega ejemplo)",
-          helpUiExport: "exportar: PNG o PDF",
+          helpTitle: "Guía Rápida",
+          helpNavTitle: "Atajos de Teclado",
+          helpNavRow1: "Semana anterior",
+          helpNavRow2: "Semana siguiente",
+          helpNavRow3: "Mes siguiente",
+          helpNavRow4: "Mes anterior",
+          helpNavRow5: "Home: Primera semana del año",
+          helpNavRow6: "End: Última semana del año",
+          helpUiTitle: "Interfaz de Usuario",
+          helpUiLang: "Idioma: Español/Inglés",
+          helpUiTheme: "Modo: Oscuro o claro",
+          helpUiClear: "Limpiar semana (si está vacía: + agrega ejemplo)",
+          helpUiExport: "Exportar: PNG o PDF",
+          helpDisclaimerLabel: "Aviso:",
+          helpDisclaimerBody: "Esta aplicación funciona localmente en el navegador. Cada navegador guarda su propio calendario de forma independiente. Cambiar de navegador o de dispositivo no borra tus datos: simplemente usarás un calendario nuevo en ese entorno. El calendario solo se elimina si se borran manualmente los datos del navegador donde fue creado.",
           confirmTitle: "Descartar cambios",
-          confirmMessage: "Tienes cambios sin guardar. Deseas cancelar?",
+          confirmMessage: "Tienes cambios sin guardar. ¿Deseas cancelar?",
           confirmStay: "Seguir editando",
           confirmDiscard: "Descartar",
           deleteConfirmTitle: "Eliminar bloque",
-          deleteConfirmMessage: "Seguro que quieres eliminar este bloque?",
+          deleteConfirmMessage: "¿Seguro que quieres eliminar este bloque?",
           deleteConfirmCancel: "Cancelar",
           deleteConfirmAction: "Eliminar bloque",
           moveTitle: "Mover bloque",
@@ -1559,20 +1715,21 @@
           restoreWeekTitle: "Restore sample",
           restoreWeekCancel: "Cancel",
           restoreWeekConfirm: "Add sample",
-          helpTitle: "Quick guide",
-          helpIntro: "\u2328\ufe0f Keyboard shortcuts",
-          helpNavTitle: "\u2328\ufe0f Keyboard Shortcuts",
-          helpNavRow1: "previous week",
-          helpNavRow2: "next week",
-          helpNavRow3: "next month",
-          helpNavRow4: "previous month",
-          helpNavRow5: "Home: first week of the year",
-          helpNavRow6: "End: last week of the year",
-          helpUiTitle: "\u{1F5A5}\ufe0f User Interface",
-          helpUiLang: "language: Spanish/English",
-          helpUiTheme: "mode: dark or light",
-          helpUiClear: "clear week (if empty: \u2795 add sample)",
-          helpUiExport: "export: PNG or PDF",
+          helpTitle: "Quick Guide",
+          helpNavTitle: "Keyboard Shortcuts",
+          helpNavRow1: "Previous week",
+          helpNavRow2: "Next week",
+          helpNavRow3: "Next month",
+          helpNavRow4: "Previous month",
+          helpNavRow5: "Home: First week of the year",
+          helpNavRow6: "End: Last week of the year",
+          helpUiTitle: "User Interface",
+          helpUiLang: "Language: Spanish/English",
+          helpUiTheme: "Mode: Dark or light",
+          helpUiClear: "Clear week (if empty: + add sample)",
+          helpUiExport: "Export: PNG or PDF",
+          helpDisclaimerLabel: "Notice:",
+          helpDisclaimerBody: "This app runs locally in your browser. Each browser saves its own calendar independently. Switching browsers or devices doesn't delete your data: you'll simply use a new calendar in that environment. Your calendar is only deleted if you manually clear the browser data where it was created.",
           confirmTitle: "Discard changes",
           confirmMessage: "You have unsaved changes. Do you want to cancel?",
           confirmStay: "Keep editing",
@@ -1607,7 +1764,7 @@
         ],
         [
           { title: "Inbox cero", description: "", color: paletteColors[5], type: "task" },
-          { title: "Gimnasio", description: "Sesion de tarde", color: paletteColors[7], type: "task" },
+          { title: "Gimnasio", description: "Sesión de tarde", color: paletteColors[7], type: "task" },
         ],
       ];
     }
@@ -2131,8 +2288,8 @@ const state = {
           date: current.getUTCDate(),
           monthIndex: current.getUTCMonth(),
           year: current.getUTCFullYear(),
-          month: current.toLocaleString(locale, { month: "long" }),
-          name: current.toLocaleString(locale, { weekday: "long" }),
+          month: current.toLocaleString(locale, { month: "long" }).replace(/^./, c => c.toUpperCase()),
+          name: current.toLocaleString(locale, { weekday: "long" }).replace(/^./, c => c.toUpperCase()),
           isWeekend: dayIndex === 0 || dayIndex === 6,
         });
         }
