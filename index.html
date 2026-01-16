@@ -475,7 +475,7 @@
         border: 1px solid var(--border);
         border-top: none;
         padding: 16px 18px;
-        min-height: 450px;
+        min-height: 500px;
         display: flex;
         flex-direction: column;
         gap: 8px;
@@ -662,12 +662,15 @@
       }
 
       .confirm-modal {
-        width: min(360px, 100%);
+        width: auto;
+        min-width: 320px;
+        max-width: min(500px, 90%);
       }
 
       .confirm-modal p {
         margin-bottom: 12px;
         color: var(--muted);
+        white-space: nowrap;
       }
 
       html.dark body .confirm-modal {
@@ -680,11 +683,6 @@
 
       html.dark body .confirm-modal strong {
         color: #ffffff;
-      }
-
-      #clear-week-message {
-        white-space: normal;
-        word-break: break-word;
       }
 
       .confirm-modal strong {
@@ -1034,6 +1032,190 @@
           justify-content: flex-start;
         }
       }
+
+      /* Week Dots Strip */
+      .week-dots-strip {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        padding: 14px 20px 16px;
+        background: var(--surface);
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+
+      .week-dots-content {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 2px;
+      }
+
+      .week-dots-month-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .week-dots-month-dots {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 6px;
+        border-radius: 10px;
+        background: transparent;
+        transition: background 0.2s ease;
+      }
+
+      .week-dots-month-group.is-current-month .week-dots-month-dots {
+        background: rgba(126, 184, 218, 0.15);
+      }
+
+      html.dark body .week-dots-month-group.is-current-month .week-dots-month-dots {
+        background: rgba(90, 159, 196, 0.2);
+      }
+
+      .week-dots-month-label {
+        font-size: 0.58rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        opacity: 0.5;
+        white-space: nowrap;
+      }
+
+      .week-dots-month-group.is-current-month .week-dots-month-label {
+        opacity: 1;
+        color: #7eb8da;
+      }
+
+      html.dark body .week-dots-month-group.is-current-month .week-dots-month-label {
+        color: #5a9fc4;
+      }
+
+      .week-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--border);
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      .week-dot:hover {
+        transform: scale(1.4);
+      }
+
+      .week-dot.has-content {
+        background: #7eb8da;
+      }
+
+      html.dark body .week-dot.has-content {
+        background: #5a9fc4;
+      }
+
+      .week-dot.is-current {
+        box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--text);
+      }
+
+      .week-dot.is-current.has-content {
+        box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px #7eb8da;
+      }
+
+      html.dark body .week-dot.is-current.has-content {
+        box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px #5a9fc4;
+      }
+
+      .week-dot-tooltip {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--text);
+        color: var(--surface);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+        z-index: 10;
+      }
+
+      .week-dot:hover .week-dot-tooltip {
+        opacity: 1;
+      }
+
+      .week-dot-tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 4px solid transparent;
+        border-top-color: var(--text);
+      }
+
+      @media (max-width: 900px) {
+        .week-dots-strip {
+          padding: 12px 14px 14px;
+        }
+
+        .week-dots-month-group {
+          gap: 5px;
+        }
+
+        .week-dots-month-dots {
+          gap: 4px;
+          padding: 3px 5px;
+        }
+
+        .week-dot {
+          width: 10px;
+          height: 10px;
+        }
+
+        .week-dots-month-label {
+          font-size: 0.5rem;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .week-dots-strip {
+          padding: 10px 12px 12px;
+        }
+
+        .week-dots-content {
+          flex-wrap: wrap;
+          gap: 4px;
+        }
+
+        .week-dots-month-group {
+          gap: 4px;
+        }
+
+        .week-dots-month-dots {
+          gap: 3px;
+          padding: 2px 4px;
+        }
+
+        .week-dot {
+          width: 8px;
+          height: 8px;
+        }
+
+        .week-dots-month-label {
+          font-size: 0.45rem;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1098,6 +1280,8 @@
         </div>
         <div class="calendar-grid" id="calendar-grid"></div>
       </section>
+
+      <div class="week-dots-strip" id="week-dots-strip"></div>
     </div>
 
     <div id="modal-overlay" class="modal-overlay">
@@ -1985,6 +2169,131 @@ const state = {
         return Object.values(weekTasks).every((tasks) => !tasks || tasks.length === 0);
       }
 
+      function countBlocksInWeek(week, year) {
+        const weekKey = getWeekKey(week, year);
+        const weekTasks = state.tasks[weekKey];
+        if (!weekTasks) return 0;
+        return Object.values(weekTasks).reduce((sum, tasks) => sum + (tasks?.length || 0), 0);
+      }
+
+      function getWeekPrimaryMonth(week, year) {
+        const days = getISOWeekDates(week, year, "en-US");
+        // Find the last day that belongs to the specified year
+        // This handles week 1 (might start in prev year) and week 53 (might end in next year)
+        for (let i = 6; i >= 0; i--) {
+          if (days[i].year === year) {
+            return days[i].monthIndex;
+          }
+        }
+        // Fallback: use first day in the correct year
+        for (let i = 0; i < 7; i++) {
+          if (days[i].year === year) {
+            return days[i].monthIndex;
+          }
+        }
+        return days[0].monthIndex;
+      }
+
+      function getWeekMonthsInYear(week, year) {
+        // Returns only the months that belong to the specified year
+        const days = getISOWeekDates(week, year, "en-US");
+        const monthsInYear = new Set();
+        days.forEach(day => {
+          if (day.year === year) {
+            monthsInYear.add(day.monthIndex);
+          }
+        });
+        return monthsInYear;
+      }
+
+      function renderWeekDots() {
+        const container = document.getElementById("week-dots-strip");
+        if (!container) return;
+        container.innerHTML = "";
+        const totalWeeks = getWeeksInYear(state.year);
+        const prefix = i18n[state.lang]?.weekPrefix || "W";
+        const locale = state.lang === "es" ? "es-ES" : "en-US";
+
+        // Get current week's months (only those in the current year)
+        const highlightedMonths = getWeekMonthsInYear(state.week, state.year);
+
+        // Group weeks by month
+        const monthGroups = new Map();
+        for (let week = 1; week <= totalWeeks; week++) {
+          const monthIndex = getWeekPrimaryMonth(week, state.year);
+          if (!monthGroups.has(monthIndex)) {
+            const monthName = new Date(Date.UTC(state.year, monthIndex, 1))
+              .toLocaleString(locale, { month: "short" }).replace(".", "");
+            monthGroups.set(monthIndex, {
+              monthIndex,
+              monthName: monthName.charAt(0).toUpperCase() + monthName.slice(1),
+              weeks: []
+            });
+          }
+          monthGroups.get(monthIndex).weeks.push(week);
+        }
+
+        // Create content container
+        const content = document.createElement("div");
+        content.className = "week-dots-content";
+
+        // Create month groups
+        monthGroups.forEach((group) => {
+          const monthGroup = document.createElement("div");
+          monthGroup.className = "week-dots-month-group";
+          if (highlightedMonths.has(group.monthIndex)) {
+            monthGroup.classList.add("is-current-month");
+          }
+
+          // Dots container
+          const dotsContainer = document.createElement("div");
+          dotsContainer.className = "week-dots-month-dots";
+
+          // Create dots for each week in this month
+          group.weeks.forEach((week) => {
+            const dot = document.createElement("div");
+            dot.className = "week-dot";
+            dot.dataset.week = week;
+
+            const blockCount = countBlocksInWeek(week, state.year);
+            if (blockCount > 0) {
+              dot.classList.add("has-content");
+            }
+
+            if (week === state.week) {
+              dot.classList.add("is-current");
+            }
+
+            const tooltip = document.createElement("span");
+            tooltip.className = "week-dot-tooltip";
+            const blockLabel = state.lang === "es"
+              ? (blockCount === 1 ? "bloque" : "bloques")
+              : (blockCount === 1 ? "block" : "blocks");
+            tooltip.textContent = `${prefix}${String(week).padStart(2, "0")} · ${blockCount} ${blockLabel}`;
+            dot.appendChild(tooltip);
+
+            dot.addEventListener("click", () => {
+              state.week = week;
+              weekSelect.value = state.week;
+              renderCalendar();
+            });
+
+            dotsContainer.appendChild(dot);
+          });
+
+          // Month label
+          const label = document.createElement("span");
+          label.className = "week-dots-month-label";
+          label.textContent = group.monthName;
+
+          monthGroup.appendChild(dotsContainer);
+          monthGroup.appendChild(label);
+          content.appendChild(monthGroup);
+        });
+
+        container.appendChild(content);
+      }
+
       function clearCurrentWeek() {
         const weekKey = getWeekKey(state.week, state.year);
         if (state.tasks[weekKey]) {
@@ -1992,6 +2301,7 @@ const state = {
         }
         saveTasks(state.tasks);
         renderTasks();
+        renderWeekDots();
       }
 
       function restoreSampleWeek() {
@@ -2014,6 +2324,7 @@ const state = {
         }
         saveTasks(state.tasks);
         renderTasks();
+        renderWeekDots();
       }
 
       function renderWeekOptions() {
@@ -2189,6 +2500,7 @@ const state = {
           calendarGrid.appendChild(createDayCell(day));
         });
         renderTasks();
+        renderWeekDots();
       }
 
       function getTasksForDay(day) {
@@ -2267,6 +2579,7 @@ const state = {
         tasks.push({ title, description, color, type });
         setTasksForDay(day, tasks);
         renderTasks();
+        renderWeekDots();
       }
 
       function handleDrop(event) {
@@ -2309,6 +2622,7 @@ const state = {
         setTasksForDay(targetDay, destination);
         clearDropMarker();
         renderTasks();
+        renderWeekDots();
       }
 
       function selectPaletteColor(color, markDirty = true) {
@@ -2448,6 +2762,7 @@ const state = {
             setTasksForDay(day, destination);
           }
           renderTasks();
+          renderWeekDots();
         } else {
           addTask(day, title, desc, color);
         }
@@ -2466,6 +2781,7 @@ const state = {
         setTasksForDay(editingTask.day, tasks);
         editingTask = null;
         renderTasks();
+        renderWeekDots();
         closeModal(true, true);
       }
 
