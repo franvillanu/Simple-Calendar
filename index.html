@@ -1635,7 +1635,7 @@
       const i18n = {
         es: {
           modalTitle: "Agregar bloque",
-          modalHint: "Clic fuera del modal para cerrar. Se guarda automáticamente al cambiar.",
+          modalHint: "Clic fuera del modal para cerrar sin guardar.",
           dayLabel: "Día",
           titleLabel: "Título",
           titlePlaceholder: "Da un nombre corto",
@@ -1692,7 +1692,7 @@
         },
         en: {
           modalTitle: "Add block",
-          modalHint: "Click outside to close. Changes are saved automatically.",
+          modalHint: "Click outside to close without saving.",
           dayLabel: "Day",
           titleLabel: "Title",
           titlePlaceholder: "Short name",
@@ -2577,7 +2577,7 @@ const state = {
         state.week = targetWeek;
         yearSelect.value = state.year;
         weekSelect.value = state.week;
-        closeModal(true, true);
+        closeModal(true);
         renderCalendar();
       }
 
@@ -2868,16 +2868,10 @@ const state = {
         document.body.style.overflow = "hidden";
       }
 
-      function closeModal(skipSave = false, force = false) {
+      function closeModal(force = false) {
         if (!force && formDirty) {
           confirmOverlay.classList.add("visible");
           return;
-        }
-        if (!skipSave) {
-          const saved = saveForm();
-          if (!saved && formDirty) {
-            return;
-          }
         }
         modalOverlay.classList.remove("visible");
         document.body.style.overflow = "";
@@ -2939,7 +2933,7 @@ const state = {
         editingTask = null;
         renderTasks();
         renderWeekDots();
-        closeModal(true, true);
+        closeModal(true);
       }
 
       closeModalButton.addEventListener("click", closeModal);
@@ -2954,7 +2948,7 @@ const state = {
 
       confirmDiscard.addEventListener("click", () => {
         confirmOverlay.classList.remove("visible");
-        closeModal(true, true);
+        closeModal(true);
       });
 
       deleteConfirmCancel.addEventListener("click", () => {
