@@ -25,6 +25,8 @@
         --card-desc: rgba(15, 18, 23, 0.65);
         --shadow: 0 20px 45px rgba(15, 18, 23, 0.08);
         --shadow-deep: 0 25px 55px rgba(5, 8, 23, 0.15);
+        --select-hover: rgba(82, 139, 255, 0.08);
+        --select-selected: rgba(82, 139, 255, 0.12);
       }
 
       body {
@@ -70,6 +72,8 @@
         --card-desc: rgba(224, 224, 224, 0.7);
         --shadow: 0 25px 80px rgba(0, 0, 0, 0.8);
         --shadow-deep: 0 25px 80px rgba(0, 0, 0, 0.8);
+        --select-hover: rgba(255, 255, 255, 0.05);
+        --select-selected: rgba(255, 255, 255, 0.08);
         background: var(--page-bg);
       }
 
@@ -842,21 +846,17 @@
       }
 
       .custom-select-option:hover {
-        background: rgba(82, 139, 255, 0.12);
+        background: var(--select-hover);
       }
 
       .custom-select-option.is-selected {
-        background: rgba(82, 139, 255, 0.18);
+        background: var(--select-selected);
         font-weight: 600;
       }
 
-      html.dark .custom-select-option:hover {
-        background: rgba(255, 255, 255, 0.12);
-      }
-
-      html.dark .custom-select-option.is-selected {
-        background: rgba(255, 255, 255, 0.12);
-        font-weight: 600;
+      html.dark {
+        --select-hover: rgba(255, 255, 255, 0.05);
+        --select-selected: rgba(255, 255, 255, 0.08);
       }
 
       .custom-select-button .custom-select-arrow {
