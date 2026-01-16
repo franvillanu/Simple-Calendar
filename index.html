@@ -832,21 +832,24 @@
         border: none;
         background: none;
         text-align: left;
-        padding: 10px 16px;
+        padding: 10px 18px;
         font-size: 1rem;
         color: var(--text);
         cursor: pointer;
         border-radius: 0;
         font-weight: 500;
-        display: block;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-clip: padding-box;
       }
 
       .custom-select-option:hover {
-        background: rgba(82, 139, 255, 0.05);
+        background: rgba(82, 139, 255, 0.08);
       }
 
       .custom-select-option.is-selected {
-        background: rgba(82, 139, 255, 0.1);
+        background: rgba(82, 139, 255, 0.12);
         font-weight: 600;
       }
 
