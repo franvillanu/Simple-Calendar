@@ -35,6 +35,29 @@
         min-height: 100vh;
       }
 
+      body,
+      .modal {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(15, 18, 23, 0.25) transparent;
+      }
+
+      body::-webkit-scrollbar,
+      .modal::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      body::-webkit-scrollbar-thumb,
+      .modal::-webkit-scrollbar-thumb {
+        background: rgba(15, 18, 23, 0.35);
+        border-radius: 999px;
+      }
+
+      body::-webkit-scrollbar-track,
+      .modal::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
       html.dark body {
         --surface: #1a1a1a;
         --surface-strong: #1f1f1f;
@@ -48,6 +71,16 @@
         --shadow: 0 25px 80px rgba(0, 0, 0, 0.8);
         --shadow-deep: 0 25px 80px rgba(0, 0, 0, 0.8);
         background: var(--page-bg);
+      }
+
+      html.dark body,
+      html.dark .modal {
+        scrollbar-color: rgba(255, 255, 255, 0.45) transparent;
+      }
+
+      html.dark body::-webkit-scrollbar-thumb,
+      html.dark .modal::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.45);
       }
 
       .page {
@@ -2380,12 +2413,30 @@ const state = {
       });
 
       document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          if (moveOverlay && moveOverlay.classList.contains("visible")) {
+            moveOverlay.classList.remove("visible");
+            event.preventDefault();
+            return;
+          }
+          if (deleteConfirmOverlay && deleteConfirmOverlay.classList.contains("visible")) {
+            deleteConfirmOverlay.classList.remove("visible");
+            event.preventDefault();
+            return;
+          }
+          if (modalOverlay.classList.contains("visible")) {
+            closeModal(true);
+            event.preventDefault();
+            return;
+          }
+        }
         if (
           event.target &&
           (event.target.tagName === "INPUT" ||
             event.target.tagName === "TEXTAREA" ||
             event.target.tagName === "SELECT" ||
-            event.target.isContentEditable)
+            event.target.isContentEditable) &&
+          event.key !== "Escape"
         ) {
           return;
         }
