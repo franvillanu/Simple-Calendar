@@ -974,7 +974,10 @@
           <div class="palette" id="color-palette"></div>
 
           <div class="modal-actions">
-            <button type="button" class="secondary" id="delete-task" style="display:none;" data-i18n="deleteBlock">Eliminar bloque</button>
+            <div style="display:flex; gap:8px;">
+              <button type="button" class="secondary" id="delete-task" style="display:none;" data-i18n="deleteBlock">Eliminar bloque</button>
+              <button type="button" class="secondary" id="move-task" style="display:none;" data-i18n="moveBlock">Mover bloque</button>
+            </div>
             <div style="margin-left:auto; display:flex; gap:10px;">
               <button type="button" class="secondary" id="cancel-modal" data-i18n="cancelBlock">Cancelar</button>
               <button type="submit" class="primary" data-i18n="saveBlock">Guardar bloque</button>
@@ -989,8 +992,35 @@
         <h2 data-i18n="confirmTitle">Descartar cambios</h2>
         <p data-i18n="confirmMessage">Tienes cambios sin guardar. Deseas cancelar?</p>
         <div class="modal-actions">
-          <button type="button" class="secondary" id="confirm-stay" data-i18n="confirmStay">Seguir editando</button>
+          <button type="button" class="primary" id="confirm-stay" data-i18n="confirmStay">Seguir editando</button>
           <button type="button" class="danger" id="confirm-discard" data-i18n="confirmDiscard">Descartar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="delete-block-overlay" class="modal-overlay">
+      <div class="modal confirm-modal" role="dialog" aria-modal="true">
+        <h2 data-i18n="deleteConfirmTitle">Eliminar bloque</h2>
+        <p data-i18n="deleteConfirmMessage">Seguro que quieres eliminar este bloque?</p>
+        <div class="modal-actions">
+          <button type="button" class="secondary" id="delete-block-cancel" data-i18n="deleteConfirmCancel">Cancelar</button>
+          <button type="button" class="danger" id="delete-block-confirm" data-i18n="deleteConfirmAction">Eliminar bloque</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="move-overlay" class="modal-overlay">
+      <div class="modal confirm-modal" role="dialog" aria-modal="true">
+        <h2 data-i18n="moveTitle">Mover bloque</h2>
+        <label for="move-year" data-i18n="moveYearLabel">Año</label>
+        <select id="move-year"></select>
+        <label for="move-week" data-i18n="moveWeekLabel">Semana</label>
+        <select id="move-week"></select>
+        <label for="move-day" data-i18n="moveDayLabel">Día</label>
+        <select id="move-day"></select>
+        <div class="modal-actions">
+          <button type="button" class="secondary" id="move-cancel" data-i18n="moveCancel">Cancelar</button>
+          <button type="button" class="primary" id="move-confirm" data-i18n="moveConfirm">Mover bloque</button>
         </div>
       </div>
     </div>
@@ -1157,6 +1187,17 @@
           confirmMessage: "Tienes cambios sin guardar. Deseas cancelar?",
           confirmStay: "Seguir editando",
           confirmDiscard: "Descartar",
+          deleteConfirmTitle: "Eliminar bloque",
+          deleteConfirmMessage: "Seguro que quieres eliminar este bloque?",
+          deleteConfirmCancel: "Cancelar",
+          deleteConfirmAction: "Eliminar bloque",
+          moveTitle: "Mover bloque",
+          moveYearLabel: "Año",
+          moveWeekLabel: "Semana",
+          moveDayLabel: "Día",
+          moveCancel: "Cancelar",
+          moveConfirm: "Mover bloque",
+          moveBlock: "Mover bloque",
         },
         en: {
           modalTitle: "Add block",
@@ -1202,6 +1243,17 @@
           confirmMessage: "You have unsaved changes. Do you want to cancel?",
           confirmStay: "Keep editing",
           confirmDiscard: "Discard",
+          deleteConfirmTitle: "Delete block",
+          deleteConfirmMessage: "Are you sure you want to delete this block?",
+          deleteConfirmCancel: "Cancel",
+          deleteConfirmAction: "Delete",
+          moveTitle: "Move block",
+          moveYearLabel: "Year",
+          moveWeekLabel: "Week",
+          moveDayLabel: "Day",
+          moveCancel: "Cancel",
+          moveConfirm: "Move block",
+          moveBlock: "Move block",
         },
       };
 
@@ -1331,6 +1383,16 @@ const state = {
       const restoreWeekMessage = document.getElementById("restore-week-message");
       const restoreWeekCancel = document.getElementById("restore-week-cancel");
       const restoreWeekConfirm = document.getElementById("restore-week-confirm");
+      const deleteConfirmOverlay = document.getElementById("delete-block-overlay");
+      const deleteConfirmCancel = document.getElementById("delete-block-cancel");
+      const deleteConfirmConfirm = document.getElementById("delete-block-confirm");
+      const moveButton = document.getElementById("move-task");
+      const moveOverlay = document.getElementById("move-overlay");
+      const moveYearSelect = document.getElementById("move-year");
+      const moveWeekSelect = document.getElementById("move-week");
+      const moveDaySelect = document.getElementById("move-day");
+      const moveCancelButton = document.getElementById("move-cancel");
+      const moveConfirmButton = document.getElementById("move-confirm");
       const titleError = document.getElementById("title-error");
       const dropMarker = document.createElement("div");
       dropMarker.className = "drop-marker";
@@ -1348,6 +1410,29 @@ const state = {
         }
         currentDropContainer = null;
         currentDropIndex = null;
+      }
+
+      function attachOverlayCloseGuard(overlay, onClose) {
+        if (!overlay) {
+          return;
+        }
+        let pointerDownOnBackdrop = false;
+        overlay.addEventListener("pointerdown", (event) => {
+          pointerDownOnBackdrop = event.target === overlay;
+        });
+        overlay.addEventListener("pointerup", (event) => {
+          pointerDownOnBackdrop = pointerDownOnBackdrop && event.target === overlay;
+        });
+        overlay.addEventListener("click", (event) => {
+          if (event.target !== overlay) {
+            return;
+          }
+          if (!pointerDownOnBackdrop) {
+            return;
+          }
+          pointerDownOnBackdrop = false;
+          onClose(event);
+        });
       }
 
       function showDropMarker(container, beforeElement, insertIndex) {
@@ -1483,16 +1568,12 @@ const state = {
         clearWeekOverlay.classList.remove("visible");
       });
 
-      clearWeekOverlay.addEventListener("click", (event) => {
-        if (event.target === clearWeekOverlay) {
-          clearWeekOverlay.classList.remove("visible");
-        }
+      attachOverlayCloseGuard(clearWeekOverlay, () => {
+        clearWeekOverlay.classList.remove("visible");
       });
 
-      restoreWeekOverlay.addEventListener("click", (event) => {
-        if (event.target === restoreWeekOverlay) {
-          restoreWeekOverlay.classList.remove("visible");
-        }
+      attachOverlayCloseGuard(restoreWeekOverlay, () => {
+        restoreWeekOverlay.classList.remove("visible");
       });
 
       if (helpToggle && helpOverlay && helpClose) {
@@ -1502,12 +1583,18 @@ const state = {
         helpClose.addEventListener("click", () => {
           helpOverlay.classList.remove("visible");
         });
-        helpOverlay.addEventListener("click", (event) => {
-          if (event.target === helpOverlay) {
-            helpOverlay.classList.remove("visible");
-          }
+        attachOverlayCloseGuard(helpOverlay, () => {
+          helpOverlay.classList.remove("visible");
         });
       }
+
+      attachOverlayCloseGuard(moveOverlay, () => {
+        moveOverlay.classList.remove("visible");
+      });
+
+      attachOverlayCloseGuard(deleteConfirmOverlay, () => {
+        deleteConfirmOverlay.classList.remove("visible");
+      });
 
       clearWeekConfirm.addEventListener("click", () => {
         clearWeekOverlay.classList.remove("visible");
@@ -1671,6 +1758,87 @@ const state = {
           if (i === state.week) option.selected = true;
           weekSelect.appendChild(option);
         }
+      }
+
+      function populateMoveYearOptions(selectedYear = state.year) {
+        if (!moveYearSelect) return;
+        moveYearSelect.innerHTML = "";
+        years.forEach((yr) => {
+          const option = document.createElement("option");
+          option.value = yr;
+          option.textContent = String(yr);
+          if (yr === selectedYear) option.selected = true;
+          moveYearSelect.appendChild(option);
+        });
+      }
+
+      function populateMoveWeekOptions(year, defaultWeek = state.week) {
+        if (!moveWeekSelect) return;
+        moveWeekSelect.innerHTML = "";
+        const totalWeeks = getWeeksInYear(year);
+        const prefix = i18n[state.lang]?.weekPrefix || "W";
+        for (let wk = 1; wk <= totalWeeks; wk++) {
+          const option = document.createElement("option");
+          option.value = wk;
+          option.textContent = `${prefix}${String(wk).padStart(2, "0")}`;
+          if (wk === defaultWeek) option.selected = true;
+          moveWeekSelect.appendChild(option);
+        }
+      }
+
+      function updateMoveDayOptions(preferredDay = null) {
+        if (!moveWeekSelect || !moveDaySelect || !moveYearSelect) return;
+        const locale = state.lang === "es" ? "es-ES" : "en-US";
+        const year = Number(moveYearSelect.value) || state.year;
+        const week = Number(moveWeekSelect.value) || state.week;
+        const days = getISOWeekDates(week, year, locale);
+        moveDaySelect.innerHTML = "";
+        let matched = false;
+        days.forEach((dayInfo) => {
+          const option = document.createElement("option");
+          option.value = dayInfo.date;
+          option.textContent = `${dayInfo.name} ${dayInfo.date}`;
+          if (preferredDay !== null && dayInfo.date === preferredDay) {
+            option.selected = true;
+            matched = true;
+          }
+          moveDaySelect.appendChild(option);
+        });
+        if (!matched && days.length) {
+          moveDaySelect.value = days[0].date;
+        }
+      }
+
+      function openMoveOverlay() {
+        if (!editingTask || !moveOverlay) return;
+        populateMoveYearOptions(state.year);
+        populateMoveWeekOptions(state.year, state.week);
+        updateMoveDayOptions(editingTask.day);
+        moveOverlay.classList.add("visible");
+      }
+
+      function moveBlockToTarget(targetYear, targetWeek, targetDay) {
+        if (!editingTask) return;
+        const tasks = getTasksForDay(editingTask.day);
+        const [moved] = tasks.splice(editingTask.index, 1);
+        setTasksForDay(editingTask.day, tasks);
+        const targetKey = getWeekKey(targetWeek, targetYear);
+        if (!state.tasks[targetKey]) {
+          state.tasks[targetKey] = {};
+        }
+        if (!state.tasks[targetKey][targetDay]) {
+          state.tasks[targetKey][targetDay] = [];
+        }
+        state.tasks[targetKey][targetDay].push(moved);
+        saveTasks(state.tasks);
+        editingTask = null;
+        formDirty = false;
+        state.year = targetYear;
+        state.week = targetWeek;
+        yearSelect.value = state.year;
+        weekSelect.value = state.week;
+        closeModal(true, true);
+        renderCalendar();
       }
 
       function updateControls(days) {
@@ -1938,12 +2106,18 @@ const state = {
           descInput.value = task.description;
           selectPaletteColor(task.color || state.color, false);
           deleteButton.style.display = "inline-flex";
+          if (moveButton) {
+            moveButton.style.display = "inline-flex";
+          }
         } else {
           editingTask = null;
           titleInput.value = "";
           descInput.value = "";
           selectPaletteColor(state.color, false);
           deleteButton.style.display = "none";
+          if (moveButton) {
+            moveButton.style.display = "none";
+          }
         }
         modalOverlay.classList.add("visible");
         document.body.style.overflow = "hidden";
@@ -2009,12 +2183,22 @@ const state = {
         return true;
       }
 
+      function deleteEditingTask() {
+        if (!editingTask) {
+          return;
+        }
+        const tasks = getTasksForDay(editingTask.day);
+        tasks.splice(editingTask.index, 1);
+        setTasksForDay(editingTask.day, tasks);
+        editingTask = null;
+        renderTasks();
+        closeModal(true, true);
+      }
+
       closeModalButton.addEventListener("click", closeModal);
 
-      modalOverlay.addEventListener("click", (event) => {
-        if (event.target === modalOverlay) {
-          closeModal();
-        }
+      attachOverlayCloseGuard(modalOverlay, () => {
+        closeModal();
       });
 
       confirmStay.addEventListener("click", () => {
@@ -2024,6 +2208,15 @@ const state = {
       confirmDiscard.addEventListener("click", () => {
         confirmOverlay.classList.remove("visible");
         closeModal(true, true);
+      });
+
+      deleteConfirmCancel.addEventListener("click", () => {
+        deleteConfirmOverlay.classList.remove("visible");
+      });
+
+      deleteConfirmConfirm.addEventListener("click", () => {
+        deleteConfirmOverlay.classList.remove("visible");
+        deleteEditingTask();
       });
 
       taskForm.addEventListener("input", () => {
@@ -2046,14 +2239,41 @@ const state = {
         closeModal(true);
       });
 
+      if (moveButton) {
+        moveButton.addEventListener("click", openMoveOverlay);
+      }
+      if (moveYearSelect) {
+        moveYearSelect.addEventListener("change", () => {
+          const selectedYear = Number(moveYearSelect.value) || state.year;
+          const defaultWeek = selectedYear === state.year ? state.week : 1;
+          populateMoveWeekOptions(selectedYear, defaultWeek);
+          updateMoveDayOptions();
+        });
+      }
+      if (moveWeekSelect) {
+        moveWeekSelect.addEventListener("change", () => {
+          updateMoveDayOptions();
+        });
+      }
+      if (moveCancelButton) {
+        moveCancelButton.addEventListener("click", () => {
+          moveOverlay.classList.remove("visible");
+        });
+      }
+      if (moveConfirmButton) {
+        moveConfirmButton.addEventListener("click", () => {
+          if (!moveYearSelect || !moveWeekSelect || !moveDaySelect) return;
+          const targetYear = Number(moveYearSelect.value) || state.year;
+          const targetWeek = Number(moveWeekSelect.value) || state.week;
+          const targetDay = Number(moveDaySelect.value) || editingTask?.day || lastSelectedDay || 1;
+          moveOverlay.classList.remove("visible");
+          moveBlockToTarget(targetYear, targetWeek, targetDay);
+        });
+      }
+
       deleteButton.addEventListener("click", () => {
         if (!editingTask) return;
-        const tasks = getTasksForDay(editingTask.day);
-        tasks.splice(editingTask.index, 1);
-        setTasksForDay(editingTask.day, tasks);
-        editingTask = null;
-        renderTasks();
-        closeModal(true);
+        deleteConfirmOverlay.classList.add("visible");
       });
 
       cancelButton.addEventListener("click", () => {
