@@ -1443,26 +1443,73 @@
         .modal {
           padding: 20px;
           border-radius: 20px;
+          max-height: calc(100vh - 40px);
+          overflow-y: auto;
         }
 
         .modal h2 {
           font-size: 1.15rem;
         }
 
+        #help-overlay .modal {
+          width: calc(100vw - 32px);
+          max-width: 100%;
+          padding: 18px;
+        }
+
         #help-overlay .modal h2 {
-          font-size: 1.35rem;
+          font-size: 1.25rem;
+          margin-bottom: 16px;
+        }
+
+        .help-cards-container {
+          gap: 18px;
+        }
+
+        .help-section-label {
+          font-size: 0.75rem;
+          margin-bottom: 8px;
+        }
+
+        .help-card {
+          padding: 12px 14px;
         }
 
         .help-card .help-row {
-          font-size: 0.9rem;
-          gap: 10px;
+          font-size: 0.85rem;
+          gap: 8px;
         }
 
         .help-card .help-key {
-          min-width: 32px;
-          height: 28px;
-          padding: 0 8px;
+          min-width: 28px;
+          height: 26px;
+          padding: 0 6px;
+          font-size: 0.75rem;
+        }
+
+        .help-card .help-sep {
+          font-size: 0.85rem;
+        }
+
+        .help-card .help-desc {
+          font-size: 0.85rem;
+        }
+
+        .help-disclaimer {
           font-size: 0.8rem;
+          padding: 12px 14px;
+        }
+
+        .modal-overlay {
+          padding: 16px;
+        }
+
+        .close-btn {
+          width: 32px;
+          height: 32px;
+          font-size: 1.5rem;
+          top: 12px;
+          right: 12px;
         }
       }
 
@@ -1708,6 +1755,66 @@
 
         .task-block {
           padding: 8px 10px;
+        }
+
+        #help-overlay .modal {
+          width: calc(100vw - 24px);
+          padding: 14px;
+        }
+
+        #help-overlay .modal h2 {
+          font-size: 1.15rem;
+          margin-bottom: 12px;
+        }
+
+        .help-cards-container {
+          gap: 14px;
+        }
+
+        .help-section-label {
+          font-size: 0.7rem;
+          margin-bottom: 6px;
+        }
+
+        .help-card {
+          padding: 10px 12px;
+        }
+
+        .help-card .help-row {
+          font-size: 0.8rem;
+          gap: 6px;
+        }
+
+        .help-card .help-key {
+          min-width: 26px;
+          height: 24px;
+          padding: 0 5px;
+          font-size: 0.7rem;
+        }
+
+        .help-card .help-sep {
+          font-size: 0.8rem;
+        }
+
+        .help-card .help-desc {
+          font-size: 0.8rem;
+        }
+
+        .help-disclaimer {
+          font-size: 0.75rem;
+          padding: 10px 12px;
+        }
+
+        .modal-overlay {
+          padding: 12px;
+        }
+
+        .close-btn {
+          width: 30px;
+          height: 30px;
+          font-size: 1.4rem;
+          top: 10px;
+          right: 10px;
         }
       }
 
@@ -3749,11 +3856,45 @@ const state = {
         // Force desktop width for horizontal layout
         const desktopWidth = Math.max(target.offsetWidth, 1100);
         exportNode.style.width = `${desktopWidth}px`;
+        exportNode.style.maxWidth = `${desktopWidth}px`;
+        exportNode.style.minWidth = `${desktopWidth}px`;
+        exportNode.style.padding = "24px 28px 32px";
+        exportNode.style.borderRadius = "30px";
+
         // Force 7-column grid layout for export
         const exportGrid = exportNode.querySelector(".calendar-grid");
         if (exportGrid) {
           exportGrid.style.gridTemplateColumns = "repeat(7, minmax(0, 1fr))";
+          exportGrid.style.gap = "0";
+          exportGrid.style.display = "grid";
         }
+
+        // Force desktop layout for calendar header
+        const exportHeader = exportNode.querySelector(".calendar-header");
+        if (exportHeader) {
+          exportHeader.style.gridTemplateColumns = "1fr auto 1fr";
+          exportHeader.style.display = "grid";
+          exportHeader.style.alignItems = "center";
+          exportHeader.style.gap = "16px";
+          exportHeader.style.padding = "8px 6px 18px";
+        }
+
+        // Force desktop styles for day cells
+        const dayCells = exportNode.querySelectorAll(".day-cell");
+        dayCells.forEach(cell => {
+          cell.style.minHeight = "500px";
+          cell.style.padding = "16px 18px";
+          cell.style.borderRadius = "0";
+          cell.style.border = "1px solid var(--border)";
+          cell.style.borderTop = "none";
+        });
+
+        // Force first row to have top border
+        const firstRowCells = exportNode.querySelectorAll(".calendar-grid > .day-cell:nth-child(-n + 7)");
+        firstRowCells.forEach(cell => {
+          cell.style.borderTop = "none";
+        });
+
         document.body.appendChild(exportNode);
         try {
           const canvas = await html2canvas(exportNode, { scale: 2 });
