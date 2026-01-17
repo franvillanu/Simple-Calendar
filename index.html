@@ -1449,9 +1449,7 @@
           padding: 20px;
           border-radius: 20px;
           max-width: 100%;
-          max-height: calc(100vh - 40px);
           overflow-x: hidden;
-          overflow-y: auto;
           box-sizing: border-box;
         }
 
@@ -1501,6 +1499,7 @@
 
         .help-card .help-desc {
           font-size: 0.85rem;
+          white-space: normal;
         }
 
         .help-disclaimer {
@@ -2767,6 +2766,7 @@ const state = {
                 ? `¿Quieres agregar bloques de ejemplo a esta semana?`
                 : `Do you want to add sample blocks to this week?`;
             restoreWeekOverlay.classList.add("visible");
+            document.body.style.overflow = "hidden";
             return;
           }
           clearWeekMessage.innerHTML =
@@ -2774,43 +2774,53 @@ const state = {
               ? `Seguro que quieres limpiar <strong>${label}</strong>?`
               : `Are you sure you want to Clean <strong>${label}</strong>?`;
           clearWeekOverlay.classList.add("visible");
+          document.body.style.overflow = "hidden";
         });
       }
 
       clearWeekCancel.addEventListener("click", () => {
         clearWeekOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
       });
 
       attachOverlayCloseGuard(clearWeekOverlay, () => {
         clearWeekOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
       });
 
       attachOverlayCloseGuard(restoreWeekOverlay, () => {
         restoreWeekOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
       });
 
       if (helpToggle && helpOverlay && helpClose) {
         helpToggle.addEventListener("click", () => {
           helpOverlay.classList.add("visible");
+          document.body.style.overflow = "hidden";
         });
         helpClose.addEventListener("click", () => {
           helpOverlay.classList.remove("visible");
+          document.body.style.overflow = "";
         });
         attachOverlayCloseGuard(helpOverlay, () => {
           helpOverlay.classList.remove("visible");
+          document.body.style.overflow = "";
         });
       }
 
       attachOverlayCloseGuard(moveOverlay, () => {
         moveOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
       });
 
       attachOverlayCloseGuard(deleteConfirmOverlay, () => {
         deleteConfirmOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
       });
 
       clearWeekConfirm.addEventListener("click", () => {
         clearWeekOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
         clearCurrentWeek();
         if (clearWeekButton) {
           clearWeekButton.textContent = "➕";
@@ -2819,10 +2829,12 @@ const state = {
 
       restoreWeekCancel.addEventListener("click", () => {
         restoreWeekOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
       });
 
       restoreWeekConfirm.addEventListener("click", () => {
         restoreWeekOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
         restoreSampleWeek();
         if (clearWeekButton) {
           clearWeekButton.textContent = "🗑️";
@@ -3161,6 +3173,7 @@ const state = {
         populateMoveWeekOptions(state.year, state.week);
         updateMoveDayOptions(editingTask.day);
         moveOverlay.classList.add("visible");
+        document.body.style.overflow = "hidden";
       }
 
       function moveBlockToTarget(targetYear, targetWeek, targetDay) {
@@ -3506,6 +3519,7 @@ const state = {
       function closeModal(force = false) {
         if (!force && formDirty) {
           confirmOverlay.classList.add("visible");
+          document.body.style.overflow = "hidden";
           return;
         }
         modalOverlay.classList.remove("visible");
@@ -3579,19 +3593,23 @@ const state = {
 
       confirmStay.addEventListener("click", () => {
         confirmOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
       });
 
       confirmDiscard.addEventListener("click", () => {
         confirmOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
         closeModal(true);
       });
 
       deleteConfirmCancel.addEventListener("click", () => {
         deleteConfirmOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
       });
 
       deleteConfirmConfirm.addEventListener("click", () => {
         deleteConfirmOverlay.classList.remove("visible");
+        document.body.style.overflow = "";
         deleteEditingTask();
       });
 
@@ -3634,6 +3652,7 @@ const state = {
       if (moveCancelButton) {
         moveCancelButton.addEventListener("click", () => {
           moveOverlay.classList.remove("visible");
+          document.body.style.overflow = "";
         });
       }
       if (moveConfirmButton) {
@@ -3643,6 +3662,7 @@ const state = {
           const targetWeek = Number(moveWeekSelect.value) || state.week;
           const targetDay = Number(moveDaySelect.value) || editingTask?.day || lastSelectedDay || 1;
           moveOverlay.classList.remove("visible");
+          document.body.style.overflow = "";
           moveBlockToTarget(targetYear, targetWeek, targetDay);
         });
       }
@@ -3650,6 +3670,7 @@ const state = {
       deleteButton.addEventListener("click", () => {
         if (!editingTask) return;
         deleteConfirmOverlay.classList.add("visible");
+        document.body.style.overflow = "hidden";
       });
 
       cancelButton.addEventListener("click", () => {
@@ -3755,11 +3776,13 @@ const state = {
           closeAllCustomSelects();
           if (moveOverlay && moveOverlay.classList.contains("visible")) {
             moveOverlay.classList.remove("visible");
+            document.body.style.overflow = "";
             event.preventDefault();
             return;
           }
           if (deleteConfirmOverlay && deleteConfirmOverlay.classList.contains("visible")) {
             deleteConfirmOverlay.classList.remove("visible");
+            document.body.style.overflow = "";
             event.preventDefault();
             return;
           }
