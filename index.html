@@ -1441,11 +1441,18 @@
           display: none;
         }
 
+        .modal-overlay {
+          padding: 16px;
+        }
+
         .modal {
           padding: 20px;
           border-radius: 20px;
+          max-width: 100%;
           max-height: calc(100vh - 40px);
+          overflow-x: hidden;
           overflow-y: auto;
+          box-sizing: border-box;
         }
 
         .modal h2 {
@@ -1501,16 +1508,34 @@
           padding: 12px 14px;
         }
 
-        .modal-overlay {
-          padding: 16px;
-        }
-
         .close-btn {
           width: 32px;
           height: 32px;
           font-size: 1.5rem;
           top: 12px;
           right: 12px;
+        }
+
+        .palette {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 8px;
+        }
+
+        .modal-actions {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .modal-actions > div {
+          flex-wrap: wrap;
+        }
+
+        .modal input,
+        .modal textarea,
+        .modal select {
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
         }
       }
 
