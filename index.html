@@ -13,6 +13,14 @@
       })();
     </script>
     <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        overflow-x: hidden;
+      }
+
       :root {
         --surface: #ffffff;
         --surface-strong: #f5f7fb;
@@ -37,6 +45,8 @@
         background: var(--page-bg);
         color: var(--text);
         min-height: 100vh;
+        overflow-x: hidden;
+        width: 100%;
       }
 
       body.app-loading {
@@ -102,7 +112,8 @@
       }
 
       .page {
-        width: min(1200px, 100%);
+        width: 100%;
+        max-width: 1200px;
         margin: 0 auto;
         padding: 30px 18px 60px;
         display: flex;
@@ -325,6 +336,8 @@
         padding: 24px 28px 32px;
         border: 1px solid var(--border);
         box-shadow: var(--shadow);
+        width: 100%;
+        max-width: 100%;
       }
 
       .calendar-header {
@@ -1257,34 +1270,35 @@
         .action-group {
           order: 1;
           width: 100%;
-          justify-content: center;
+          justify-content: space-evenly;
           padding: 8px;
-          gap: 8px;
-          flex-wrap: wrap;
+          gap: 6px;
+          flex-wrap: nowrap;
         }
 
         .action-group button,
         .action-group .language-toggle,
         .action-group .export-menu {
           flex: 0 0 auto;
-          min-width: 44px;
-          min-height: 44px;
-          padding: 10px 16px;
-          font-size: 0.85rem;
+          min-width: 40px;
+          min-height: 40px;
+          padding: 8px;
+          font-size: 1rem;
         }
 
         .action-group .language-toggle {
-          padding: 4px;
+          padding: 3px;
         }
 
         .action-group .language-toggle span {
-          min-width: 32px;
-          padding: 6px 10px;
-          font-size: 0.85rem;
+          min-width: 28px;
+          padding: 5px 8px;
+          font-size: 0.8rem;
         }
 
         #export-button {
-          font-size: 0.85rem;
+          font-size: 0.8rem;
+          padding: 8px 12px;
         }
 
         .export-dropdown {
@@ -1294,13 +1308,14 @@
         }
 
         .page {
-          padding: 12px 10px 40px;
+          padding: 12px 8px 40px;
           gap: 16px;
         }
 
         .calendar-wrapper {
           padding: 12px;
           border-radius: 20px;
+          width: 100%;
         }
 
         .calendar-header {
@@ -1638,11 +1653,12 @@
       /* Extra small mobile devices */
       @media (max-width: 380px) {
         .page {
-          padding: 10px 8px 40px;
+          padding: 10px 6px 40px;
         }
 
         .calendar-wrapper {
-          padding: 10px;
+          padding: 8px;
+          width: 100%;
         }
 
         .calendar-header {
@@ -1654,22 +1670,36 @@
         .calendar-title-controls #prev-month,
         .calendar-title-controls #next-month,
         #month-text {
-          font-size: 18px;
+          font-size: 17px;
         }
 
         .calendar-week-controls,
         #week-text {
-          font-size: 14px;
+          font-size: 13px;
         }
 
         .action-group {
           padding: 6px;
-          gap: 6px;
+          gap: 4px;
+          justify-content: space-evenly;
         }
 
         .action-group button {
-          padding: 8px 12px;
-          font-size: 0.8rem;
+          padding: 6px 8px;
+          font-size: 0.95rem;
+          min-width: 36px;
+          min-height: 36px;
+        }
+
+        .action-group .language-toggle span {
+          min-width: 24px;
+          padding: 4px 6px;
+          font-size: 0.75rem;
+        }
+
+        #export-button {
+          font-size: 0.75rem;
+          padding: 6px 8px;
         }
 
         .day-cell {
