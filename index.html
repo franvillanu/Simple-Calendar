@@ -731,6 +731,7 @@
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.25s ease;
+        z-index: 1000;
       }
 
       .modal-overlay.visible {
@@ -3739,13 +3740,15 @@ const state = {
             return;
           }
           const { jsPDF } = window.jspdf;
-          const imgData = canvas.toDataURL("image/png");
+          // Use JPEG with 0.92 quality for much smaller file size
+          const imgData = canvas.toDataURL("image/jpeg", 0.92);
           const pdf = new jsPDF({
             orientation: "landscape",
             unit: "pt",
             format: [canvas.width, canvas.height],
+            compress: true,
           });
-          pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+          pdf.addImage(imgData, "JPEG", 0, 0, canvas.width, canvas.height, undefined, "FAST");
           pdf.save(`calendar-w${String(state.week).padStart(2, "0")}-${state.year}.pdf`);
         } catch (error) {
           console.error("Export failed", error);
