@@ -1235,52 +1235,87 @@
 
         header {
           flex-direction: column;
-          align-items: flex-start;
+          align-items: stretch;
+          gap: 12px;
         }
 
         .header-actions {
           width: 100%;
           flex-direction: column;
           align-items: stretch;
-        }
-
-        .week-nav,
-        .action-group {
-          width: 100%;
-          justify-content: flex-start;
+          gap: 10px;
         }
 
         .today-button {
           order: 2;
           width: 100%;
-          height: 50px;
+          height: 44px;
+          font-size: 0.9rem;
+          padding: 0 16px;
         }
 
         .action-group {
           order: 1;
+          width: 100%;
+          justify-content: center;
+          padding: 8px;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .action-group button,
+        .action-group .language-toggle,
+        .action-group .export-menu {
+          flex: 0 0 auto;
+          min-width: 44px;
+          min-height: 44px;
+          padding: 10px 16px;
+          font-size: 0.85rem;
+        }
+
+        .action-group .language-toggle {
+          padding: 4px;
+        }
+
+        .action-group .language-toggle span {
+          min-width: 32px;
+          padding: 6px 10px;
+          font-size: 0.85rem;
+        }
+
+        #export-button {
+          font-size: 0.85rem;
+        }
+
+        .export-dropdown {
+          right: auto;
+          left: 50%;
+          transform: translateX(-50%);
         }
 
         .page {
-          padding: 20px 14px 40px;
-          gap: 20px;
+          padding: 12px 10px 40px;
+          gap: 16px;
         }
 
         .calendar-wrapper {
-          padding: 16px;
-          border-radius: 22px;
+          padding: 12px;
+          border-radius: 20px;
         }
 
         .calendar-header {
           grid-template-columns: 1fr;
           justify-items: center;
-          gap: 12px;
-          padding: 10px 0 14px;
+          gap: 10px;
+          padding: 12px 8px;
           background: var(--surface);
           position: sticky;
           top: 0;
           z-index: 3;
           border-bottom: none;
           text-align: center;
+          border-radius: 16px 16px 0 0;
+          margin: -12px -12px 12px -12px;
         }
 
         .calendar-left,
@@ -1300,16 +1335,16 @@
         .calendar-title-controls #prev-month,
         .calendar-title-controls #next-month,
         #month-text {
-          font-size: 22px;
+          font-size: 20px;
         }
 
         .calendar-week-controls,
         #week-text {
-          font-size: 16px;
+          font-size: 15px;
         }
 
         .calendar-year {
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           justify-self: center;
           justify-content: center;
         }
@@ -1320,7 +1355,7 @@
 
         .calendar-range {
           display: flex;
-          font-size: 0.85rem;
+          font-size: 0.8rem;
           font-weight: 600;
           color: var(--muted);
           gap: 6px;
@@ -1330,8 +1365,8 @@
 
         .day-cell {
           min-height: 0;
-          padding: 14px;
-          border-radius: 18px;
+          padding: 12px;
+          border-radius: 16px;
           border: 1px solid var(--border);
         }
 
@@ -1341,10 +1376,11 @@
 
         .day-header {
           padding-bottom: 8px;
+          margin-bottom: 8px;
         }
 
         .day-number {
-          font-size: 1.2rem;
+          font-size: 1.15rem;
         }
 
         .day-name {
@@ -1357,18 +1393,61 @@
 
         .task-block {
           border-radius: 12px;
-          padding: 8px 10px;
-          min-height: 40px;
+          padding: 10px 12px;
+          min-height: 44px;
+        }
+
+        .task-block .task-title {
+          font-size: 0.9rem;
+          padding-right: 24px;
+        }
+
+        .task-block .task-description {
+          font-size: 0.75rem;
+          padding-right: 24px;
+        }
+
+        .task-block .edit-icon {
+          width: 24px;
+          height: 24px;
+          font-size: 0.85rem;
         }
 
         .day-add-slot {
-          min-height: 42px;
+          min-height: 44px;
           opacity: 1;
           pointer-events: auto;
+          font-size: 0.9rem;
+          padding: 12px;
         }
 
         .week-dots-strip {
           display: none;
+        }
+
+        .modal {
+          padding: 20px;
+          border-radius: 20px;
+        }
+
+        .modal h2 {
+          font-size: 1.15rem;
+        }
+
+        #help-overlay .modal h2 {
+          font-size: 1.35rem;
+        }
+
+        .help-card .help-row {
+          font-size: 0.9rem;
+          gap: 10px;
+        }
+
+        .help-card .help-key {
+          min-width: 32px;
+          height: 28px;
+          padding: 0 8px;
+          font-size: 0.8rem;
         }
       }
 
@@ -1553,6 +1632,75 @@
 
         .week-dots-month-label {
           font-size: 0.45rem;
+        }
+      }
+
+      /* Extra small mobile devices */
+      @media (max-width: 380px) {
+        .page {
+          padding: 10px 8px 40px;
+        }
+
+        .calendar-wrapper {
+          padding: 10px;
+        }
+
+        .calendar-header {
+          padding: 10px 6px;
+          gap: 8px;
+        }
+
+        .calendar-title-controls #month-select,
+        .calendar-title-controls #prev-month,
+        .calendar-title-controls #next-month,
+        #month-text {
+          font-size: 18px;
+        }
+
+        .calendar-week-controls,
+        #week-text {
+          font-size: 14px;
+        }
+
+        .action-group {
+          padding: 6px;
+          gap: 6px;
+        }
+
+        .action-group button {
+          padding: 8px 12px;
+          font-size: 0.8rem;
+        }
+
+        .day-cell {
+          padding: 10px;
+        }
+
+        .task-block {
+          padding: 8px 10px;
+        }
+      }
+
+      /* Improve touch interactions on mobile */
+      @media (hover: none) and (pointer: coarse) {
+        .day-add-slot {
+          opacity: 0.8;
+          transition: opacity 0.2s ease, transform 0.1s ease;
+        }
+
+        .day-add-slot:active {
+          transform: scale(0.98);
+          opacity: 1;
+        }
+
+        button:active,
+        .task-block:active {
+          transform: scale(0.98);
+          transition: transform 0.1s ease;
+        }
+
+        .week-dot:active {
+          transform: scale(1.3);
         }
       }
 
