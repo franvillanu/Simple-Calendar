@@ -936,6 +936,9 @@
         line-height: 1.5;
         color: var(--text);
         margin-top: 8px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
       }
 
       .help-disclaimer strong {
@@ -1128,7 +1131,7 @@
 
       .modal-actions {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: center;
         gap: 10px;
         margin-top: 6px;
@@ -1449,7 +1452,7 @@
           padding: 20px;
           border-radius: 20px;
           max-width: 100%;
-          max-height: calc(100vh - 40px);
+          max-height: calc(90vh - 36px);
           overflow-x: hidden;
           overflow-y: auto;
           box-sizing: border-box;
@@ -1524,10 +1527,12 @@
         .modal-actions {
           flex-wrap: wrap;
           gap: 8px;
+          width: 100%;
         }
 
         .modal-actions > div {
           flex-wrap: wrap;
+          gap: 8px;
         }
 
         .modal input,
